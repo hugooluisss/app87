@@ -6,11 +6,12 @@ function loadLogin(){
 			$(this).tab('show');
 		});
 		
-		$("#txtUsuario").focus();
-			
-		$("div[role=alert]").hide();
+		$('.selectpicker').selectpicker({});
+		
+		$("#frmLogin").find("#txtUsuario").focus();
 		$("#frmLogin").validate({
 			debug: true,
+			errorClass: "validateError",
 			rules: {
 				txtUsuario: {
 					required : true,
@@ -20,14 +21,52 @@ function loadLogin(){
 					required : true
 				}
 			},
-			wrapper: 'span', 
-			messages: {
-				txtUsuario:{
-					required: "Ingresa un usuario",
-					email: "El usuario es una cuenta de correo electrónico"
+			wrapper: 'span',
+			submitHandler: function(form){
+				var obj = new TUsuario;
+				
+				obj.login($("#txtUsuario").val(), $("#txtPass").val(), {
+					before: function(){
+						$("#frmLogin [type=submit]").prop("disabled", true);
+						console.log("iniciando");
+						
+					},
+					after: function(data){
+						$("#frmLogin [type=submit]").prop("disabled", false);
+						console.log(data);
+						if (data.band == false){
+							alert("Tus datos no son válidos");
+						}else{
+							location.reload(true);
+						}
+					}
+				});
+			}
+		});
+		
+		
+		$("#frmRegistro").validate({
+			debug: true,
+			errorClass: "validateError",
+			rules: {
+				txtUsuario: {
+					required : true,
+					email: true
 				},
 				txtPass: {
-					required: "Es necesaria la contraseña"
+					required : true,
+					minlength: 5
+				},
+				txtPass2: {
+					required : true,
+					minlength: 5,
+					equalTo: "#frmRegistro #txtPass"
+				}
+			},
+			wrapper: 'span', 
+			messages: {
+				txtPass2: {
+					equalTo: "Las contraseñas no coinciden"
 				}
 			},
 			submitHandler: function(form){

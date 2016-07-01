@@ -1,15 +1,23 @@
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-md-6 col-md-offset-3">
+		<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
+			<br />
+			<div class="row">
+				<div class="col-xs-12 text-center">
+					<img src="img/logo.png">
+				</div>
+			</div>
+			<br />
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#home">Iniciar sesión</a></li>
-				<li><a href="#menu1">Registro</a></li>
+				<li><a href="#registro">Registrate</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
+					<br />
 					<form onsubmit="javascript: return false" method="post" id="frmLogin" name="frmLogin">
 						<div class="form-group has-feedback">
-							<input type="email" class="form-control" placeholder="Usuario" id="txtUsuario" name="txtUsuario" autocomplete="no">
+							<input type="email" class="form-control" placeholder="Correo electrónico" id="txtUsuario" name="txtUsuario" autocomplete="no">
 							<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 						</div>
 						<div class="form-group has-feedback">
@@ -35,9 +43,41 @@
 						</div>
 					</form>
 				</div>
-				<div id="menu1" class="tab-pane fade">
-					<h3>Menu 1</h3>
-					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				<div id="registro" class="tab-pane fade">
+					<br />
+					<div class="alert alert-info" role="alert">
+						Regístrate y obtén una suscripción por 15 días completamente gratis
+					</div>
+					<form onsubmit="javascript: return false" method="post" id="frmRegistro" name="frmRegistro">
+						<div class="form-group has-feedback">
+							<input type="email" class="form-control" placeholder="Nombre completo" id="txtNombre" name="txtNombre" autocomplete="no">
+							<span class="glyphicon glyphicon-user form-control-feedback"></span>
+						</div>
+						<div class="form-group has-feedback">
+							<input type="email" class="form-control" placeholder="Correo electrónico" id="txtUsuario" name="txtUsuario" autocomplete="no">
+							<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+						</div>
+						<div class="form-group has-feedback">
+							<input type="password" class="form-control" placeholder="Contraseña" id="txtPass" name="txtPass">
+							<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+						</div>
+						<div class="form-group has-feedback">
+							<input type="password" class="form-control" placeholder="Confirmar" id="txtPass2" name="txtPass2">
+						</div>
+						<div class="form-group">
+							<select class="selectpicker form-control" id="selSexo" name="selSexo">
+								<option data-icon="fa fa-male">Hombre</option>
+								<option data-icon="fa fa-female">Mujer</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-xs-12 text-center">
+									<button type="submit" class="btn btn-primary btn-block btn-flat">Registrarme</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
