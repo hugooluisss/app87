@@ -35,7 +35,7 @@ function loadLogin(){
 						$("#frmLogin [type=submit]").prop("disabled", false);
 						console.log(data);
 						if (data.band == false){
-							alert("Tus datos no son válidos");
+							alertify.alert("Tus datos no son válidos");
 						}else{
 							location.reload(true);
 						}
@@ -44,14 +44,26 @@ function loadLogin(){
 			}
 		});
 		
-		
 		$("#frmRegistro").validate({
-			debug: true,
 			errorClass: "validateError",
+			debug: true,
 			rules: {
+				txtNombre: {
+					required : true,
+					email: false
+				},
 				txtUsuario: {
 					required : true,
-					email: true
+					email: true,
+					remote: {
+						url: server + "cclientes",
+						type: "post",
+						data: {
+							action: "validaEmail",
+							"movil": 1,
+							id: ""
+						}
+					}
 				},
 				txtPass: {
 					required : true,
@@ -61,30 +73,33 @@ function loadLogin(){
 					required : true,
 					minlength: 5,
 					equalTo: "#frmRegistro #txtPass"
-				}
+				},
 			},
 			wrapper: 'span', 
 			messages: {
-				txtPass2: {
-					equalTo: "Las contraseñas no coinciden"
+				txtUsuario: {
+					remote: "Este correo ya se encuentra registrado"
 				}
 			},
 			submitHandler: function(form){
-				var obj = new TUsuario;
+				var obj = new TCliente;
+				form = $(form);
 				
-				obj.login($("#txtUsuario").val(), $("#txtPass").val(), {
+				obj.registrar("", form.find("#txtNombre").val(), form.find("#selSexo").val(), form.find("#txtUsuario").val(), form.find("#txtPass").val(), true, {
 					before: function(){
-						$("#frmLogin [type=submit]").prop("disabled", true);
-						console.log("iniciando");
-						
+						form.find("[type=submit]").prop("disabled", true);
 					},
 					after: function(data){
-						$("#frmLogin [type=submit]").prop("disabled", false);
-						console.log(data);
+						form.find("[type=submit]").prop("disabled", false);
+						
 						if (data.band == false){
-							alert("Tus datos no son válidos");
+							alertify.alert("Ocurrió un error al registrar la cuenta, inténtelo más tarde");
 						}else{
-							location.reload(true);
+							if (form.find("#selSexo").val() == 'H')
+								alertify.success("<b>Bienvenido " + form.find("#txtNombre").val() + "</b>, haz quedado registrado");
+							else
+								alertify.success("<b>Bienvenida " + form.find("#txtNombre").val() + "</b>, haz quedado registrado");
+							setTimeout(function(){location.reload(true)}, 3000);
 						}
 					}
 				});

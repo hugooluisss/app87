@@ -1,15 +1,6 @@
 var usuario = new TUsuario;
 
 $(document).ready(function(){
-	/*var objUsuario = new TUsuario;
-	objUsuario.logout({
-						after: function(){
-							alert("Hola");
-							location.reload(true);
-						}
-					});
-
-*/
 	if (usuario.isSesionIniciada()){
 		getPanel();
 		getMenu();
@@ -34,33 +25,6 @@ $(document).ready(function(){
 			var objUsuario = new TUsuario;
 			
 			$("[vista=nombreUsuario]").html(objUsuario.getNombre());
-			
-			$("#menuPrincipal [liga=miEmpresa]").click(function(){
-				miEmpresaPanel();
-			});
-			
-			$("#menuPrincipal [liga=usuarios]").click(function(){
-				usuarios();
-			});
-			
-			$("#menuPrincipal [liga=categorias]").click(function(){
-				categorias();
-			});
-			$("#menuPrincipal [liga=productos]").click(function(){
-				productos();
-			});
-			
-			$("#menuPrincipal [liga=clientes]").click(function(){
-				clientes();
-			});
-			
-			$("#menuPrincipal [liga=ventas]").click(function(){
-				ventas();
-			});
-			
-			$("#menuPrincipal [liga=pedidos]").click(function(){
-				pedidos();
-			});
 			
 			//Opciones del menú
 			$("#menuPrincipal [liga=salir]").click(function(){

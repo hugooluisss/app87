@@ -2,17 +2,15 @@ TUsuario = function(){
 	var self = this;
 	this.sesion = window.localStorage.getItem("sesion");
 	
-	this.add = function(id,	empresa, nombre, apellidos, email, perfil, fn){
+	this.add = function(id, nombre, sexo, email, pass, fn){
 		if (fn.before !== undefined) fn.before();
 		
-		$.post(server + 'cusuarios', {
+		$.post(server + 'cclientes', {
 				"action": "add",
 				"id": id,
 				"nombre": nombre,
-				"apellidos": apellidos, 
-				"email": email, 
-				"perfil": perfil, 
-				"empresa": empresa
+				"sexo": email, 
+				"pass": pass
 			}, function(data){
 				if (data.band == 'false')
 					console.log(data.mensaje);
@@ -57,7 +55,8 @@ TUsuario = function(){
 		if (fn.before != undefined)
 			fn.before();
 				
-		$.post(server + 'index.php?mod=clogin&action=login', {
+		$.post(server + 'clogin', {
+			"action": "login",
 			"usuario": usuario,
 			"pass": pass,
 			"movil": 1
@@ -69,9 +68,7 @@ TUsuario = function(){
 				var obj = new Object;
 				obj.identificador = datos.identificador;
 				obj.usuario = usuario;
-				obj.tipo = datos.tipo;
 				obj.nombre = datos.nombre;
-				obj.empresa = datos.empresa;
 				
 				window.localStorage.setItem("sesion", JSON.stringify(obj));
 			}
@@ -95,7 +92,7 @@ TUsuario = function(){
 		else{
 			var data = JSON.parse(this.sesion);
 			console.log(this.sesion);
-			return data.tipo;
+			return data.identificador;
 		}
 	}
 	
