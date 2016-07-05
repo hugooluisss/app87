@@ -93,7 +93,7 @@ function loadLogin(){
 						form.find("[type=submit]").prop("disabled", false);
 						
 						if (data.band == false){
-							alertify.alert("Ocurrió un error al registrar la cuenta, inténtelo más tarde");
+							alertify.error("Ocurrió un error al registrar la cuenta, inténtelo más tarde");
 						}else{
 							if (form.find("#selSexo").val() == 'H')
 								alertify.success("<b>Bienvenido " + form.find("#txtNombre").val() + "</b>, haz quedado registrado");
@@ -104,6 +104,29 @@ function loadLogin(){
 					}
 				});
 			}
+		});
+		
+		$("#lnkLostPass").click(function(){
+			alertify.prompt("<b>¿Olvidaste tu contraseña?</b>, introduce tu correo electrónico:", function (e, str) { 
+				if (e){
+					if (str == '')
+						alertify.error("No se indicó un correo electrónico");
+					else{
+						var cliente = new TCliente;
+						
+						cliente.recuperarPass(str, {
+							before: function(){
+								$("#lnkLostPass").prop("disabled", true);
+								alertify.success("Gracias, enviaremos un correo a <b>" + str + "</b> para la recuperación de tu contraseña");
+							},
+							afert: function(resp){
+								$("#lnkLostPass").prop("disabled", false);
+							}
+						});
+					}
+						
+				}
+			}, $("#frmLogin").find("#txtUsuario").val());
 		});
 	});
 };

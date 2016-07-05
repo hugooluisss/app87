@@ -1,57 +1,29 @@
 <!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">75%</a>
-		</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<div class="row visible-xs">
-				<div class="col-xs-12 col-sm-4 text-center">
-					<img src="./img/user.png" class="img-circle" id="fotoPerfil" onerror="this.onerror=null;this.src='./img/user.png';"/>
-					<br />
-					<span vista="nombreUsuario" />
-				</div>
-			</div>
-			<ul class="nav navbar-nav" id="menuPrincipal">
-				<li class="menu-list">
-					<a href="#"><span class="glyphicon glyphicon-home"></span> 
-						<span><i class="fa fa-cog"></i> Configuración</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="#" liga="miEmpresa">Mi Empresa</a></li>
-							<li><a href="#" liga="usuarios">Usuarios</a></li>
-						</ul>
-				</li>
-				<li class="menu-list">
-					<a href="#"><span class="glyphicon glyphicon-cd"></span> 
-						<span>Almacén</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="#" liga="categorias">Categorías</a></li>
-							<li><a href="#" liga="productos">Productos</a></li>
-						</ul>
-				</li>
-				<li><a href="#" liga="clientes"><span class="glyphicon glyphicon-user"></span> Clientes</a></li>
-				<li class="menu-list">
-					<a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> 
-						<span>Ventas</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="#" liga="ventas">Caja</a></li>
-							<li><a href="#" liga="pedidos">Pedidos</a></li>
-						</ul>
-				</li>
-				<li>
-					<a href="#" liga="salir"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
-				</li>
-			</ul>
-		</div>
-		<!-- /.navbar-collapse -->
+<nav class="navbar navbar-fixed-top navbar-full barraNavegacion" role="navigation">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle hidden-sm-up" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			<i class="fa fa-bars" aria-hidden="true"></i> Menú
+		</button>
+		<a class="navbar-brand" href="#">75%</a>
 	</div>
-	<!-- /.container -->
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="row visible-xs">
+			<div class="col-xs-12 col-sm-4 text-center">
+				<img src="./img/user.png" class="img-circle" id="fotoPerfil" onerror="this.onerror=null;this.src='./img/user.png';"/>
+				<br />
+				<span vista="nombreUsuario" />
+			</div>
+		</div>
+		<ul class="nav navbar-nav" id="menuPrincipal">
+			<li>
+				<a href="#" liga="datosPersonales"><i class="fa fa-book" aria-hidden="true"></i> Mis datos</a>
+			</li>
+			<li>
+				<a href="#" liga="salir"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
+			</li>
+		</ul>
+	</div>
+	<!-- /.navbar-collapse -->
 </nav>

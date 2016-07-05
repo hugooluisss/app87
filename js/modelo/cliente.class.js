@@ -21,4 +21,20 @@ TCliente = function(){
 					fn.after(data);
 			}, "json");
 	};
+	
+	this.recuperarPass = function(correo, fn){
+		if (fn.before !== undefined) fn.before();
+		
+		$.post(server + 'cclientes', {
+				"correo": correo,
+				"action": 'recuperarPass',
+				"movil": '1'
+			}, function(data){
+				if (data.band == 'false')
+					console.log(data.mensaje);
+					
+				if (fn.after !== undefined)
+					fn.after(data);
+			}, "json");
+	}
 };

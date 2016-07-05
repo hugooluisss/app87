@@ -1,9 +1,59 @@
 @import "md/material-design-color-palette.less";
 @import "funciones.less";
 
+@anchoMenuColapsed: 200px;
 
 .validateError{
 	color: @mdc-red;
 	font-size: 12px;
 	font-weight: inherit;
+}
+
+.barraNavegacion{
+	color: white;
+	a{
+		color: white;
+	}
+	
+	.navbar-header{
+		background: @mdc-green-500;
+		
+		.navbar-toggle{
+			background: @mdc-green-300;
+			font-size: 12px;
+			color: white;
+		}
+	}
+	
+	.navbar-collapse{
+		background: @mdc-green-300;
+		width: @anchoMenuColapsed;
+		float: right;
+		
+		img{
+			margin-top: 10px;
+			width: 80%;
+		}
+		
+		.navbar-nav > li > a{
+			border-bottom: dotted 1px @mdc-green-100;
+			&:first-child{
+				border-top: dotted 1px @mdc-green-100;	
+			}
+			&:hover, &:focus{
+				background: @mdc-green-500;
+			}
+		}
+	}
+}
+
+@media (min-width: 768px){
+	.barraNavegacion{
+		background: @mdc-green-300;
+	}
+}
+
+
+#modulo{
+	margin-top: 60px;
 }
