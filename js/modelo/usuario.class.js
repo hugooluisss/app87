@@ -69,6 +69,7 @@ TUsuario = function(){
 				obj.identificador = datos.identificador;
 				obj.usuario = usuario;
 				obj.nombre = datos.nombre;
+				obj.sexo = datos.sexo;
 				
 				window.localStorage.setItem("sesion", JSON.stringify(obj));
 			}
@@ -102,10 +103,10 @@ TUsuario = function(){
 		return data.nombre;
 	}
 	
-	this.getEmpresa = function(){
+	this.getSexo = function(){
 		var data = JSON.parse(this.sesion);
 			
-		return data.empresa;
+		return data.sexo;
 	}
 	
 	this.getId = function(){

@@ -1,19 +1,48 @@
 <div class="container">
 	<form onsubmit="javascript: return false" method="post" id="frmDatos" name="frmDatos">
+		<label for="sr-only">Sexo</label>
+		<div class="input-group has-feedback" campo="sexo"></div>
+		<br />
 		<label for="sr-only">Fecha de nacimiento</label>
 		<div class="form-group has-feedback">
 			<input type="date" class="form-control" placeholder="Fecha de nacimiento" id="txtNacimiento" name="txtNacimiento" autocomplete="no">
 			<span class="glyphicon glyphicon-calendar form-control-feedback"></span>
 		</div>
+		<label for="sr-only">Edad</label>
+		<div class="input-group has-feedback">
+			<input type="text" class="form-control text-right" id="txtEdad" name="txtEdad" autocomplete="no" readonly="true" disabled="true">
+			<span class="input-group-addon">años</span>
+		</div>
 		<label for="sr-only">Altura</label>
 		<div class="input-group has-feedback">
-			<input type="number" min="1" class="form-control" placeholder="Altura en cm" id="txtAltura" name="txtAltura" autocomplete="no" value="1">
+			<input type="number" min="1" class="form-control text-right" placeholder="Altura en cm" id="txtAltura" name="txtAltura" autocomplete="no" value="1">
 			<span class="input-group-addon">cm</span>
 		</div>
 		<label for="sr-only">Peso</label>
 		<div class="input-group has-feedback">
-			<input type="number" min="1" class="form-control" placeholder="Peso en kg" id="txtPeso" name="txtPeso" autocomplete="no" value="1">
+			<input type="number" min="1" class="form-control text-right" placeholder="Peso en kg" id="txtPeso" name="txtPeso" autocomplete="no" value="1">
 			<span class="input-group-addon">kg</span>
+		</div>
+		<label for="sr-only">IMC</label>
+		<div class="form-group has-feedback">
+			<input type="text" class="form-control text-right" id="txtIMC" name="txtIMC" autocomplete="no" readonly="true" disabled="true" title="Indice de Masa Corporal">
+		</div>
+		<label for="sr-only">% Grasa Corporal Estimada</label>
+		<div class="input-group has-feedback">
+			<input type="text" class="form-control text-right" id="txtPGCE" name="txtPGCE" autocomplete="no" readonly="true" disabled="true" title="Indice de Masa Corporal">
+			<span class="input-group-addon">%</span>
+		</div>
+
+		<br />
+		
+		<div class="form-group">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary btn-block btn-flat">Calcular</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</form>
 </div>

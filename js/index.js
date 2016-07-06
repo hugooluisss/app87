@@ -33,13 +33,14 @@ $(document).ready(function(){
 			
 			//Opciones del menú
 			$("#menuPrincipal [liga=salir]").click(function(){
-				if(confirm("¿Seguro?")){
-					objUsuario.logout({
-						after: function(){
-							location.reload(true);
-						}
-					});
-				}
+				alertify.confirm("¿Seguro?", function(e){
+					if (e)
+						objUsuario.logout({
+							after: function(){
+								location.reload(true);
+							}
+						});
+				});
 			});
 			
 			
