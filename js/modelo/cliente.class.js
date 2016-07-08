@@ -16,12 +16,15 @@ TCliente = function(){
 					self.email = data.email;
 					self.nacimiento = data.nacimiento;
 					self.peso = data.peso;
-					self.altura = data.altura
+					self.estatura = data.estatura;
 					
+					window.localStorage.removeItem("cliente");
 					window.localStorage.setItem("cliente", JSON.stringify(data));
+					console.log("SERVER ", data);
 			}, "json");
 		}else{
 			var data = JSON.parse(cliente);
+			console.log("SISTEMA ", data);
 			
 			self.id = data.id;
 			self.nombre = data.nombre;
@@ -29,17 +32,19 @@ TCliente = function(){
 			self.email = data.email;
 			self.nacimiento = data.nacimiento;
 			self.peso = data.peso;
-			self.altura = data.altura
+			self.estatura = data.estatura;
+			
+			//window.localStorage.removeItem("cliente");
 		}
 	}
 	
 	this.getDatos();
 	
 	this.calcularEdad = function(){
-		if (self.nacimiento == '') return false;
+		if (self.nacimiento == '' || self.nacimiento == undefined) return 0;
 		else{
 			var fecha = self.nacimiento;
-			var values=fecha.split("-");
+			var values = fecha.split("-");
 			var dia = values[2];
 			var mes = values[1];
 			var ano = values[0];
@@ -64,9 +69,10 @@ TCliente = function(){
 	
 	this.calcularIMC = function(){
 		var peso = this.peso;
-		var altura = this.altura / 100;
-		
-		if (peso == '' || altura == '') return 0;
+		var altura = this.estatura / 100;
+		console.log(peso + " " + altura + " " + this.estatura);
+		if (peso == '' || altura == '')
+			return 0;
 		else{
 			var imc = peso / (altura * altura);
 			return imc.toFixed(1); //D11
@@ -75,7 +81,7 @@ TCliente = function(){
 	
 	this.calcularPGCE = function(){
 		var imc = this.calcularIMC();
-		var edad = this.calcularEdad(self.getFechaNacimiento()); //D7
+		var edad = this.calcularEdad(self.nacimiento); //D7
 		var iSexo = usuario.sexo == 'M'?0:1; //D8
 		
 		var PGCE = -44.988 + 0.503 * edad + 10.689 * iSexo + 3.172 * imc - 0.026 * imc * imc + 0.181 * imc * iSexo - 0.02 * imc * edad - 0.005 * imc * imc * iSexo + 0.00021 * imc * imc * edad;

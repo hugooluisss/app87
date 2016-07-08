@@ -15,7 +15,7 @@ $(document).ready(function(){
 			$("#menu").html(resp);
 			$("body").addClass("conmenu");
 			
-			$("#fotoPerfil").attr("src", server + "repositorio/imagenesUsuarios/img_" + usuario.getId() + ".jpg?" + Math.random());
+			//$("#fotoPerfil").attr("src", server + "repositorio/imagenesUsuarios/img_" + usuario.getId() + ".jpg?" + Math.random());
 			
 			$("#menuPrincipal a").click(function(){
 				$('#menuPrincipal').parent().removeClass("in");

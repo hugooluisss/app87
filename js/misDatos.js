@@ -2,14 +2,20 @@ function getPanelMisDatos(){
 	$.get("vistas/misDatos.html", function(resp){
 		$("#modulo").html(resp);
 		var usuario = new TUsuario;
+		var cliente = new TCliente;
 		
-		$("[campo=sexo]").html(usuario.getSexo() == 'M'?'<i class="fa fa-male" aria-hidden="true"></i> Masculino':'<i class="fa fa-female" aria-hidden="true"></i> Femenino');
+		$("[campo=sexo]").html(cliente.sexo == 'M'?'<i class="fa fa-male" aria-hidden="true"></i> Masculino':'<i class="fa fa-female" aria-hidden="true"></i> Femenino');
 		
 		$("#txtNacimiento").datepicker({});
+		$("#txtNacimiento").val(cliente.nacimiento);
+		$("#txtEdad").val(cliente.calcularEdad());
+		$("#txtPeso").val(cliente.peso);
+		$("#txtAltura").val(cliente.estatura);
 		$("#txtNacimiento").change(function(){
-			if ($("#txtNacimiento") != '')
-				$("#txtEdad").val(calcularEdad($("#txtNacimiento").val()));
-			else
+			if ($("#txtNacimiento") != ''){
+				cliente.nacimiento = $("#txtNacimiento").val();
+				$("#txtEdad").val(cliente.calcularEdad());
+			}else
 				$("#txtEdad").val("");
 		});
 		
@@ -17,7 +23,6 @@ function getPanelMisDatos(){
 			$("#frmDatos").find("#txtIMC").val("");
 			$("#frmDatos").find("#txtPGCE").val("");
 		});
-		
 		
 		$("#frmDatos").validate({
 			debug: false,
@@ -39,21 +44,10 @@ function getPanelMisDatos(){
 			},
 			submitHandler: function(form){
 				var cliente = new TCliente;
-				cliente.altura = $("#txtAltura").val();
+				cliente.estatura = $("#txtAltura").val();
 				cliente.peso = $("#txtPeso").val();
-				$("#txtIMC").val(cliente.calcularIMC);
-				
-				/*
-				//=-44,988+0,503*D7+10,689*D8+3,172*D11-0,026*D11*D11+0,181*D11*D8-0,02*D11*D7-0,005*D11*D11*D8+0,00021*D11*D11*D7
-				var edad = calcularEdad($("#txtNacimiento").val()); //D7
-				var iSexo = usuario.getSexo() == 'M'?0:1; //D8
-				var PGCE = -44.988 + 0.503 * edad + 10.689 * iSexo + 3.172 * imc - 0.026 * imc * imc + 0.181 * imc * iSexo - 0.02 * imc * edad - 0.005 * imc * imc * iSexo + 0.00021 * imc * imc * edad;
-				
-				PGCE = Number(Math.round(PGCE + 'e1') + 'e-1');
-				$("#txtPGCE").val(cliente.calcularPGCE());*/
-			},
-			errorPlacement: function(error, element){
-				alertify.alert(error.html());
+				$("#txtIMC").val(cliente.calcularIMC());
+				$("#txtPGCE").val(cliente.calcularPGCE());
 			}
 		});
 	});
