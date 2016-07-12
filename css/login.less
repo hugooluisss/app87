@@ -1,0 +1,40 @@
+body.login{
+	background-image: url('../img/bg-login.png');
+	background-position-x: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	
+	#modulo{
+		margin-top: 45px;
+		
+		.nav{
+			li{
+				a{
+					color: white;
+				}
+				
+				&.active a{
+					color: black;
+				}
+				
+				a:hover{
+					background: @mdc-green-600;
+					color: white;
+					border-color: none;
+				}
+			}
+		}
+		
+		#dvLogo{
+			margin-bottom: 30px;
+		}
+	}
+	
+	label.validateError{
+		color: @mdc-green-50;
+		width: 100%;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+}
+

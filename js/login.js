@@ -1,5 +1,6 @@
 function loadLogin(){
 	$.get("vistas/login.html", function(resp){
+		$("body").addClass("login");
 		$("#modulo").html(resp);
 		
 		$(".nav-tabs a").click(function(){
@@ -7,6 +8,7 @@ function loadLogin(){
 		});
 		
 		$('.selectpicker').selectpicker({});
+		$("#txtNacimiento").datepicker({});
 		
 		$("#frmLogin").find("#txtUsuario").focus();
 		$("#frmLogin").validate({
@@ -74,6 +76,9 @@ function loadLogin(){
 					minlength: 5,
 					equalTo: "#frmRegistro #txtPass"
 				},
+				txtNacimiento: {
+					required : true
+				}
 			},
 			wrapper: 'span', 
 			messages: {
@@ -85,7 +90,7 @@ function loadLogin(){
 				var obj = new TCliente;
 				form = $(form);
 				
-				obj.registrar("", form.find("#txtNombre").val(), form.find("#selSexo").val(), form.find("#txtUsuario").val(), form.find("#txtPass").val(), true, {
+				obj.registrar("", form.find("#txtNombre").val(), form.find("#selSexo").val(), form.find("#txtUsuario").val(), form.find("#txtPass").val(), form.find("#txtNacimiento").val(), true, {
 					before: function(){
 						form.find("[type=submit]").prop("disabled", true);
 					},

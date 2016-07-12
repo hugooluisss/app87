@@ -10,7 +10,7 @@ TCliente = function(){
 				"action": 'getData',
 				"movil": '1'
 			}, function(data){
-					self.id = data.idCliente;
+					self.idCliente = data.idCliente;
 					self.nombre = data.nombre;
 					self.sexo = data.sexo;
 					self.email = data.email;
@@ -26,7 +26,7 @@ TCliente = function(){
 			var data = JSON.parse(cliente);
 			console.log("SISTEMA ", data);
 			
-			self.id = data.id;
+			self.idCliente = data.idCliente;
 			self.nombre = data.nombre;
 			self.sexo = data.sexo;
 			self.email = data.email;
@@ -40,7 +40,22 @@ TCliente = function(){
 	
 	this.getDatos();
 	
-	this.calcularEdad = function(){
+	this.save = function(){
+		var obj = new Object;
+		
+		obj.idCliente = self.idCliente;
+		obj.nombre = self.nombre;
+		obj.sexo = self.sexo;
+		obj.email = self.email;
+		obj.nacimiento = self.nacimiento;
+		obj.peso = self.peso;
+		obj.estatura = self.estatura;
+		
+		window.localStorage.removeItem("cliente");
+		window.localStorage.setItem("cliente", JSON.stringify(obj));
+	}
+	
+	this.calcularEdad = function(server){
 		if (self.nacimiento == '' || self.nacimiento == undefined) return 0;
 		else{
 			var fecha = self.nacimiento;
@@ -62,6 +77,20 @@ TCliente = function(){
 				
 			if (edad > 1900)
 				edad -= 1900;
+			
+			if (server === true){
+				$.post(server + 'cclientes', {
+					"nacimiento": self.nacimiento,
+					"cliente": self.idCliente,
+					"action": 'actualizarNacimiento',
+					"movil": '1'
+				}, function(data){
+					if (data.band == 'false')
+						console.log(data.mensaje);
+					else
+						self.save();
+				}, "json");
+			}
 				
 			return edad;
 		}
@@ -105,7 +134,7 @@ TCliente = function(){
 			}, "json");
 	}
 	
-	this.registrar = function(id, nombre, sexo, email, pass, suscripcion, fn){
+	this.registrar = function(id, nombre, sexo, email, pass, nacimiento, suscripcion, fn){
 		if (fn.before !== undefined) fn.before();
 		
 		$.post(server + 'cclientes', {
@@ -115,6 +144,7 @@ TCliente = function(){
 				"email": email,
 				"pass": pass,
 				"suscripcion": suscripcion,
+				"nacimiento": nacimiento,
 				"action": 'add',
 				"movil": '1'
 			}, function(data){

@@ -3,6 +3,10 @@
 
 @anchoMenuColapsed: 200px;
 
+body{
+	.degrada(90, #b3b3b3, #fff, #fff);
+}
+
 .validateError{
 	color: @mdc-red;
 	font-size: 12px;
@@ -16,17 +20,22 @@
 	}
 	
 	.navbar-header{
-		background: @mdc-green-500;
+		background: url("../img/bg-login.png") #8cc63f;
 		
 		.navbar-toggle{
 			background: @mdc-green-300;
 			font-size: 12px;
 			color: white;
 		}
+		
+		.navbar-center{
+			margin-top: 15px;
+			float: left;
+		}
 	}
 	
 	.navbar-collapse{
-		background: @mdc-green-300;
+		background: url("../img/bg-login.png");
 		width: @anchoMenuColapsed;
 		float: right;
 		
@@ -45,26 +54,37 @@
 			}
 		}
 	}
+	
+	.navbar-brand{
+		img{
+			width: 60px;
+		}
+	}
+}
+
+#modulo{
+	margin-top: 80px;
 }
 
 @media (min-width: 768px){
 	.barraNavegacion{
-		background: @mdc-green-300;
-	}
-}
-
-
-#modulo{
-	.container:first-child{
-		padding-top: 60px;
-	}
-	
-	#moduloLogin{
-		.degrada(90deg, #b3b3b3, #fff 300px, #b3b3b3);
+		background: url("../img/bg-login.png") #8cc63f;
+		background-size: cover;
 		
-		.tab-content{
-			.degrada(0deg, #089543, #93c01f 120px, #92c01f 100px);
+		.navbar-header{
+			background: none;
 		}
+		
+		.navbar-collapse{
+			background: none;
 
-	}
+			.navbar-nav > li > a{
+				&, &:hover, &:focus, &:first-child{
+					border: none;
+				}
+			}
+		}
+	}	
 }
+
+@import "login.less";

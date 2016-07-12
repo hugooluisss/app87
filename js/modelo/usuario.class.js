@@ -92,7 +92,6 @@ TUsuario = function(){
 			return false;
 		else{
 			var data = JSON.parse(this.sesion);
-			console.log(this.sesion);
 			return data.identificador;
 		}
 	}

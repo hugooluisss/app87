@@ -2,6 +2,7 @@ var usuario = new TUsuario;
 
 $(document).ready(function(){
 	if (usuario.isSesionIniciada()){
+		var cliente = new TCliente;
 		getPanel();
 		getMenu();
 		

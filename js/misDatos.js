@@ -1,5 +1,7 @@
 function getPanelMisDatos(){
 	$.get("vistas/misDatos.html", function(resp){
+		$(".navbar-title").html("Mis datos");
+		
 		$("#modulo").html(resp);
 		var usuario = new TUsuario;
 		var cliente = new TCliente;
@@ -8,13 +10,18 @@ function getPanelMisDatos(){
 		
 		$("#txtNacimiento").datepicker({});
 		$("#txtNacimiento").val(cliente.nacimiento);
-		$("#txtEdad").val(cliente.calcularEdad());
+		
+		$("#txtEdad").val(cliente.calcularEdad(false));
 		$("#txtPeso").val(cliente.peso);
 		$("#txtAltura").val(cliente.estatura);
+		
+		$("#txtIMC").val(cliente.calcularIMC());
+		$("#txtPGCE").val(cliente.calcularPGCE());
+							
 		$("#txtNacimiento").change(function(){
 			if ($("#txtNacimiento") != ''){
 				cliente.nacimiento = $("#txtNacimiento").val();
-				$("#txtEdad").val(cliente.calcularEdad());
+				$("#txtEdad").val(cliente.calcularEdad(true));
 			}else
 				$("#txtEdad").val("");
 		});
@@ -43,11 +50,30 @@ function getPanelMisDatos(){
 				}
 			},
 			submitHandler: function(form){
-				var cliente = new TCliente;
-				cliente.estatura = $("#txtAltura").val();
-				cliente.peso = $("#txtPeso").val();
-				$("#txtIMC").val(cliente.calcularIMC());
-				$("#txtPGCE").val(cliente.calcularPGCE());
+				var momento = new TMomento;
+				console.log(cliente.idCliente);
+				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), {
+					before: function(){
+						$("#frmDatos").find("[type=submit]").prop("disabled", true);
+						alertify.log("Espera un momento, estamos actualizando tus datos..."); 
+					},
+					after: function(resp){
+						$("#frmDatos").find("[type=submit]").prop("disabled", false);
+						
+						if (resp.band){
+							var cliente = new TCliente;
+							cliente.estatura = $("#txtAltura").val();
+							cliente.peso = $("#txtPeso").val();
+							
+							$("#txtIMC").val(cliente.calcularIMC());
+							$("#txtPGCE").val(cliente.calcularPGCE());
+							
+							cliente.save();
+						}else{
+							alertify.error("No se pudo actualizar la información, inténtalo mas tarde"); 
+						}
+					}
+				});
 			}
 		});
 	});
