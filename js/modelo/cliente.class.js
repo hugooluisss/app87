@@ -111,8 +111,8 @@ TCliente = function(){
 	this.calcularPGCE = function(){
 		var imc = this.calcularIMC();
 		var edad = this.calcularEdad(self.nacimiento); //D7
-		var iSexo = usuario.sexo == 'M'?0:1; //D8
-		
+		var iSexo = self.sexo == 'M'?0:1; //D8
+		console.log(iSexo + ' ' + edad);
 		var PGCE = -44.988 + 0.503 * edad + 10.689 * iSexo + 3.172 * imc - 0.026 * imc * imc + 0.181 * imc * iSexo - 0.02 * imc * edad - 0.005 * imc * imc * iSexo + 0.00021 * imc * imc * edad;
 		
 		return Number(Math.round(PGCE + 'e1') + 'e-1');
