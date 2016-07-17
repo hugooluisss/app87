@@ -1,13 +1,14 @@
 TMomento = function(){
 	var self = this;
 	
-	this.add = function(cliente, altura, peso, fn){
+	this.add = function(cliente, altura, peso, actividad, fn){
 		if (fn.before !== undefined) fn.before();
 		
 		$.post(server + 'cclientes', {
 				"cliente": cliente,
 				"altura": altura,
 				"peso": peso,
+				"actividad": actividad,
 				"action": 'addMomento',
 				"movil": '1'
 			}, function(data){

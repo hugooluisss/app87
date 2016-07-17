@@ -1,6 +1,9 @@
 var usuario = new TUsuario;
 
 $(document).ready(function(){
+	$("#modulo").css("min-height", screen.height + "px");
+
+
 	if (usuario.isSesionIniciada()){
 		var cliente = new TCliente;
 		getPanel();

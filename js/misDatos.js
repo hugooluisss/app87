@@ -1,5 +1,6 @@
 function getPanelMisDatos(){
 	$.get("vistas/misDatos.html", function(resp){
+		var actividades = undefined;
 		$(".navbar-title").html("Mis datos");
 		
 		$("#modulo").html(resp);
@@ -14,9 +15,13 @@ function getPanelMisDatos(){
 		$("#txtEdad").val(cliente.calcularEdad(false));
 		$("#txtPeso").val(cliente.peso);
 		$("#txtAltura").val(cliente.estatura);
+		$("#txtActividad").val(cliente.nombreActividad);
+		$("#txtActividad").attr("tipoActividad", cliente.idActividad);
 		
 		$("#txtIMC").val(cliente.calcularIMC());
 		$("#txtPGCE").val(cliente.calcularPGCE());
+		
+		$("#txtBMR").val(cliente.calcularBMR());
 							
 		$("#txtNacimiento").change(function(){
 			if ($("#txtNacimiento") != ''){
@@ -29,6 +34,41 @@ function getPanelMisDatos(){
 		$("#frmDatos").find("input").change(function(){
 			$("#frmDatos").find("#txtIMC").val("");
 			$("#frmDatos").find("#txtPGCE").val("");
+		});
+		
+		$("#frmDatos").find("#txtActividad").click(function(){
+			$("#winActividad").modal();
+			
+			if (actividades == undefined){
+				$.get("vistas/listaActividades.html", function(resp){
+					$("#winActividad").find(".modal-body").find(".list-group").html("");
+					var el = resp;
+					
+					$.post(server + 'listaTipoActividades', {
+							"json": true,
+							"movil": '1'
+						}, function(datos){
+							actividades = datos;
+							
+							$.each(datos, function (index, row){
+								var el2 = $(el);
+								$.each(row, function(campo, valor){
+									el2.find("[campo=" + campo + "]").html(valor);
+								});
+								
+								el2.attr("json", row.json);
+								el2.click(function(){
+									data = jQuery.parseJSON(el2.attr("json"));
+									$("#txtActividad").val(data.nombre);
+									$("#txtActividad").attr("tipoActividad", data.idTipo);
+									$("#winActividad").modal("hide");
+								});
+								
+								$("#winActividad").find(".modal-body").find(".list-group").append(el2);
+							});
+						}, "json");
+				});
+			}
 		});
 		
 		$("#frmDatos").validate({
@@ -51,8 +91,8 @@ function getPanelMisDatos(){
 			},
 			submitHandler: function(form){
 				var momento = new TMomento;
-				console.log(cliente.idCliente);
-				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), {
+				console.log($("#txtActividad").attr("tipoActividad"));
+				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtActividad").attr("tipoActividad"), {
 					before: function(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", true);
 						alertify.log("Espera un momento, estamos actualizando tus datos..."); 
@@ -67,8 +107,12 @@ function getPanelMisDatos(){
 							
 							$("#txtIMC").val(cliente.calcularIMC());
 							$("#txtPGCE").val(cliente.calcularPGCE());
+							$("#txtBMR").val(cliente.calcularBMR());
 							
 							cliente.save();
+							$("#imgEstado").prop("src", "img/obeso_" + cliente.sexo + "_" + resp.magro.idObesidad + ".png");
+							$("[campo=obesidad]").html(resp.magro.nombre);
+							$("#winResultados").modal();
 						}else{
 							alertify.error("No se pudo actualizar la información, inténtalo mas tarde"); 
 						}

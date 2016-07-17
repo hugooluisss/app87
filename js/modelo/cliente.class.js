@@ -17,6 +17,8 @@ TCliente = function(){
 					self.nacimiento = data.nacimiento;
 					self.peso = data.peso;
 					self.estatura = data.estatura;
+					self.idActividad = data.idActividad;
+					self.nombreActividad = data.nombreActividad;
 					
 					window.localStorage.removeItem("cliente");
 					window.localStorage.setItem("cliente", JSON.stringify(data));
@@ -33,6 +35,8 @@ TCliente = function(){
 			self.nacimiento = data.nacimiento;
 			self.peso = data.peso;
 			self.estatura = data.estatura;
+			self.idActividad = data.idActividad;
+			self.nombreActividad = data.nombreActividad;
 			
 			//window.localStorage.removeItem("cliente");
 		}
@@ -50,6 +54,8 @@ TCliente = function(){
 		obj.nacimiento = self.nacimiento;
 		obj.peso = self.peso;
 		obj.estatura = self.estatura;
+		obj.idActividad = self.idActividad;
+		obj.nombreActividad = self.nombreActividad;
 		
 		window.localStorage.removeItem("cliente");
 		window.localStorage.setItem("cliente", JSON.stringify(obj));
@@ -118,6 +124,13 @@ TCliente = function(){
 		return Number(Math.round(PGCE + 'e1') + 'e-1');
 	}
 	
+	this.calcularBMR = function(){ //metabolismo basal
+		if (self.sexo == 'H')
+			return 1 * self.peso * 24;
+		else
+			return 0.9 * self.peso * 24;
+	}
+	
 	this.recuperarPass = function(correo, fn){
 		if (fn.before !== undefined) fn.before();
 		
@@ -134,7 +147,7 @@ TCliente = function(){
 			}, "json");
 	}
 	
-	this.registrar = function(id, nombre, sexo, email, pass, nacimiento, suscripcion, fn){
+	this.registrar = function(id, nombre, sexo, email, pass, nacimiento, suscripcion, idActividad, fn){
 		if (fn.before !== undefined) fn.before();
 		
 		$.post(server + 'cclientes', {
@@ -145,6 +158,7 @@ TCliente = function(){
 				"pass": pass,
 				"suscripcion": suscripcion,
 				"nacimiento": nacimiento,
+				"actividad": idActividad,
 				"action": 'add',
 				"movil": '1'
 			}, function(data){
