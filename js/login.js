@@ -30,16 +30,17 @@ function loadLogin(){
 				obj.login($("#txtUsuario").val(), $("#txtPass").val(), {
 					before: function(){
 						$("#frmLogin [type=submit]").prop("disabled", true);
-						console.log("iniciando");
-						
 					},
 					after: function(data){
-						$("#frmLogin [type=submit]").prop("disabled", false);
-						console.log(data);
 						if (data.band == false){
 							alertify.alert("Tus datos no son válidos");
+							$("#frmLogin [type=submit]").prop("disabled", false);
 						}else{
-							location.reload(true);
+							var cliente = new TCliente;
+							
+							setInterval(function(){
+								location.reload(true);
+							}, 3000);
 						}
 					}
 				});
