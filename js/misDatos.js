@@ -16,7 +16,7 @@ function getPanelMisDatos(){
 		$("#txtPeso").val(cliente.peso);
 		$("#txtAltura").val(cliente.estatura);
 		$("#txtActividad").val(cliente.nombreActividad);
-		$("#txtActividad").attr("tipoActividad", cliente.idActividad);
+		$("#txtActividad").attr("actividad", cliente.idActividad);
 		
 		$("#txtIMC").val(cliente.calcularIMC());
 		$("#txtPGCE").val(cliente.calcularPGCE());
@@ -36,6 +36,17 @@ function getPanelMisDatos(){
 			$("#frmDatos").find("#txtPGCE").val("");
 		});
 		
+		$.post(server + 'listaObjetivos', {
+			"json": true,
+			"movil": '1'
+		}, function(datos){
+			$.each(datos, function (index, row){
+				$("#frmDatos").find("#selObjetivo").append('<option value="' + row.idObjetivo + '">' + row.nombre + '</option>');
+			});
+			
+			$("#frmDatos").find("#selObjetivo").val(cliente.idObjetivo);
+		}, "json");
+		
 		$("#frmDatos").find("#txtActividad").click(function(){
 			$("#winActividad").modal();
 			
@@ -44,29 +55,29 @@ function getPanelMisDatos(){
 					$("#winActividad").find(".modal-body").find(".list-group").html("");
 					var el = resp;
 					
-					$.post(server + 'listaTipoActividades', {
-							"json": true,
-							"movil": '1'
-						}, function(datos){
-							actividades = datos;
-							
-							$.each(datos, function (index, row){
-								var el2 = $(el);
-								$.each(row, function(campo, valor){
-									el2.find("[campo=" + campo + "]").html(valor);
-								});
-								
-								el2.attr("json", row.json);
-								el2.click(function(){
-									data = jQuery.parseJSON(el2.attr("json"));
-									$("#txtActividad").val(data.nombre);
-									$("#txtActividad").attr("tipoActividad", data.idTipo);
-									$("#winActividad").modal("hide");
-								});
-								
-								$("#winActividad").find(".modal-body").find(".list-group").append(el2);
+					$.post(server + 'listaActividades', {
+						"json": true,
+						"movil": '1'
+					}, function(datos){
+						actividades = datos;
+						
+						$.each(datos, function (index, row){
+							var el2 = $(el);
+							$.each(row, function(campo, valor){
+								el2.find("[campo=" + campo + "]").html(valor);
 							});
-						}, "json");
+							
+							el2.attr("json", row.json);
+							el2.click(function(){
+								data = jQuery.parseJSON(el2.attr("json"));
+								$("#txtActividad").val(data.nombre);
+								$("#txtActividad").attr("actividad", data.idActividad);
+								$("#winActividad").modal("hide");
+							});
+							
+							$("#winActividad").find(".modal-body").find(".list-group").append(el2);
+						});
+					}, "json");
 				});
 			}
 		});
@@ -91,8 +102,8 @@ function getPanelMisDatos(){
 			},
 			submitHandler: function(form){
 				var momento = new TMomento;
-				console.log($("#txtActividad").attr("tipoActividad"));
-				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtActividad").attr("tipoActividad"), {
+				console.log($("#selObjetivo").val());
+				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtActividad").attr("actividad"), $("#selObjetivo").val(), {
 					before: function(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", true);
 						alertify.log("Espera un momento, estamos actualizando tus datos..."); 
@@ -108,7 +119,9 @@ function getPanelMisDatos(){
 							$("#txtIMC").val(cliente.calcularIMC());
 							$("#txtPGCE").val(cliente.calcularPGCE());
 							$("#txtBMR").val(cliente.calcularBMR());
-							
+							cliente.nombreActividad = $("#txtActividad").val();
+							cliente.idActividad = $("#txtActividad").attr("actividad");
+							cliente.idObjetivo = $("#selObjetivo").val();
 							cliente.save();
 							$("#imgEstado").prop("src", "img/obeso_" + cliente.sexo + "_" + resp.magro.idObesidad + ".png");
 							$("[campo=obesidad]").html(resp.magro.nombre);

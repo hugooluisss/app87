@@ -19,6 +19,7 @@ TCliente = function(){
 					self.estatura = data.estatura;
 					self.idActividad = data.idActividad;
 					self.nombreActividad = data.nombreActividad;
+					self.idObjetivo = data.idObjetivo;
 					self.fecha = data.fecha;
 					
 					window.localStorage.removeItem("cliente");
@@ -38,6 +39,7 @@ TCliente = function(){
 			self.estatura = data.estatura;
 			self.idActividad = data.idActividad;
 			self.nombreActividad = data.nombreActividad;
+			self.idObjetivo = data.idObjetivo;
 			self.fecha = data.fecha;
 			
 			//window.localStorage.removeItem("cliente");
@@ -58,6 +60,7 @@ TCliente = function(){
 		obj.estatura = self.estatura;
 		obj.idActividad = self.idActividad;
 		obj.nombreActividad = self.nombreActividad;
+		obj.idObjetivo = self.idObjetivo;
 		
 		window.localStorage.removeItem("cliente");
 		window.localStorage.setItem("cliente", JSON.stringify(obj));
