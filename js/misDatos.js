@@ -44,7 +44,7 @@ function getPanelMisDatos(){
 				$("#frmDatos").find("#selObjetivo").append('<option value="' + row.idObjetivo + '">' + row.nombre + '</option>');
 			});
 			
-			$("#frmDatos").find("#selObjetivo").val(cliente.idObjetivo);
+			$("#frmDatos").find("#selObjetivo").val(cliente.objetivo);
 		}, "json");
 		
 		$("#frmDatos").find("#txtActividad").click(function(){

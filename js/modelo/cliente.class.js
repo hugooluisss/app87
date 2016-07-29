@@ -19,7 +19,7 @@ TCliente = function(){
 					self.estatura = data.estatura;
 					self.idActividad = data.idActividad;
 					self.nombreActividad = data.nombreActividad;
-					self.idObjetivo = data.idObjetivo;
+					self.objetivo = data.objetivo;
 					self.fecha = data.fecha;
 					
 					window.localStorage.removeItem("cliente");
@@ -39,7 +39,7 @@ TCliente = function(){
 			self.estatura = data.estatura;
 			self.idActividad = data.idActividad;
 			self.nombreActividad = data.nombreActividad;
-			self.idObjetivo = data.idObjetivo;
+			self.objetivo = data.objetivo;
 			self.fecha = data.fecha;
 			
 			//window.localStorage.removeItem("cliente");
