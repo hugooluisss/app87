@@ -21,6 +21,7 @@ TCliente = function(){
 					self.nombreActividad = data.nombreActividad;
 					self.objetivo = data.objetivo;
 					self.fecha = data.fecha;
+					self.calorias = data.calorias;
 					
 					window.localStorage.removeItem("cliente");
 					window.localStorage.setItem("cliente", JSON.stringify(data));
@@ -41,6 +42,7 @@ TCliente = function(){
 			self.nombreActividad = data.nombreActividad;
 			self.objetivo = data.objetivo;
 			self.fecha = data.fecha;
+			self.calorias = data.calorias;
 			
 			//window.localStorage.removeItem("cliente");
 		}
@@ -60,7 +62,8 @@ TCliente = function(){
 		obj.estatura = self.estatura;
 		obj.idActividad = self.idActividad;
 		obj.nombreActividad = self.nombreActividad;
-		obj.idObjetivo = self.idObjetivo;
+		obj.objetivo = self.idObjetivo;
+		obj.calorias = self.calorias;
 		
 		window.localStorage.removeItem("cliente");
 		window.localStorage.setItem("cliente", JSON.stringify(obj));

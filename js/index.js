@@ -35,6 +35,10 @@ $(document).ready(function(){
 				getPanelMisDatos();
 			});
 			
+			$("#menuPrincipal [liga=consumoDiario]").click(function(){
+				getPanelConsumo();
+			});
+			
 			//Opciones del menú
 			$("#menuPrincipal [liga=salir]").click(function(){
 				alertify.confirm("¿Seguro?", function(e){
