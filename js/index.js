@@ -110,7 +110,6 @@ $(document).ready(function(){
 		        alert("La fotografía se cargó con éxito");
 			}, function(error){
 		        alert("No se pudo subir la imagen al servidor " + error.target);
-
 			    console.log("upload error source " + error.source);
 			    console.log("upload error target " + error.target);
 			}, options);

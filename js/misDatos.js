@@ -47,7 +47,19 @@ function getPanelMisDatos(){
 			$("#frmDatos").find("#selObjetivo").val(cliente.objetivo);
 		}, "json");
 		
-		$("#frmDatos").find("#txtActividad").click(function(){
+		$.post(server + 'listaFrecuencias', {
+			"json": true,
+			"movil": '1'
+		}, function(datos){
+			$.each(datos, function (index, row){
+				$("#frmDatos").find("#selFrecuencia").append('<option value="' + row.idFrecuencia + '" nombre="' + row.nombre + '">' + row.nombre + ' - ' + row.descripcion +'</option>');
+			});
+			
+			$("#frmDatos").find("#selFrecuencia").val(cliente.idFrecuencia);
+		}, "json");
+		
+		$("#txtActividad").click(function(){
+			$("#winResultados").modal("hide");
 			$("#winActividad").modal();
 			
 			if (actividades == undefined){
@@ -70,9 +82,22 @@ function getPanelMisDatos(){
 							el2.attr("json", row.json);
 							el2.click(function(){
 								data = jQuery.parseJSON(el2.attr("json"));
-								$("#txtActividad").val(data.nombre);
-								$("#txtActividad").attr("actividad", data.idActividad);
-								$("#winActividad").modal("hide");
+								var momento = new TMomento();
+								momento.setActividad(usuario.getId(), data.idActividad, {
+									before: function(){
+										alertify.log("Estamos actualizando la actividad que realizarás... espera un momento"); 
+									}, after: function(data){
+										if (data.band){
+											alertify.success("Datos actualizados"); 
+											$("#txtActividad").val(data.nombre);
+											$("#txtActividad").attr("actividad", data.idActividad);
+											
+											$("#winActividad").modal("hide");
+											$("#winResultados").modal("show");
+										}else
+											alertifu.error("Ocurrió un error y no se realizó la actualización");
+									}
+								});
 							});
 							
 							$("#winActividad").find(".modal-body").find(".list-group").append(el2);
@@ -103,7 +128,7 @@ function getPanelMisDatos(){
 			submitHandler: function(form){
 				var momento = new TMomento;
 				console.log($("#selObjetivo").val());
-				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtActividad").attr("actividad"), $("#selObjetivo").val(), {
+				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#selFrecuencia").val(), $("#selObjetivo").val(), {
 					before: function(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", true);
 						alertify.log("Espera un momento, estamos actualizando tus datos..."); 
@@ -119,8 +144,8 @@ function getPanelMisDatos(){
 							$("#txtIMC").val(cliente.calcularIMC());
 							$("#txtPGCE").val(cliente.calcularPGCE());
 							$("#txtBMR").val(cliente.calcularBMR());
-							cliente.nombreActividad = $("#txtActividad").val();
-							cliente.idActividad = $("#txtActividad").attr("actividad");
+							cliente.idFrecuencia = $("#selFrecuencia").val();
+							cliente.nombreFrecuencia = $("#selFrecuencia").attr("nombre");
 							cliente.idObjetivo = $("#selObjetivo").val();
 							cliente.save();
 							$("#imgEstado").prop("src", "img/obeso_" + cliente.sexo + "_" + resp.magro.idObesidad + ".png");
