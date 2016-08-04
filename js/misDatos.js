@@ -2,6 +2,7 @@ function getPanelMisDatos(){
 	$.get("vistas/misDatos.html", function(resp){
 		var actividades = undefined;
 		$(".navbar-title").html("Mis datos");
+		$("#winActividad .modal-body").css("max-height", (screen.height - 200) + "px");
 		
 		$("#modulo").html(resp);
 		var usuario = new TUsuario;
@@ -86,11 +87,14 @@ function getPanelMisDatos(){
 								momento.setActividad(usuario.getId(), data.idActividad, {
 									before: function(){
 										alertify.log("Estamos actualizando la actividad que realizarás... espera un momento"); 
-									}, after: function(data){
-										if (data.band){
+									}, after: function(result){
+										if (result.band){
 											alertify.success("Datos actualizados"); 
 											$("#txtActividad").val(data.nombre);
 											$("#txtActividad").attr("actividad", data.idActividad);
+											cliente.idActividad = data.idActividad;
+											cliente.nombreActividad = data.nombre;
+											cliente.save();
 											
 											$("#winActividad").modal("hide");
 											$("#winResultados").modal("show");
