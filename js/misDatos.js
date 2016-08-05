@@ -92,6 +92,7 @@ function getPanelMisDatos(){
 											alertify.success("Datos actualizados"); 
 											$("#txtActividad").val(data.nombre);
 											$("#txtActividad").attr("actividad", data.idActividad);
+											alert(data.idActividad);
 											cliente.idActividad = data.idActividad;
 											cliente.nombreActividad = data.nombre;
 											cliente.save();
