@@ -19,11 +19,20 @@ function getPanelConsumo(){
 					if (resp.length > 0){
 						plt.find("table").find("tbody").find("tr").remove();
 						var cantidad = 0;
+						var carbohidratos = 0;
+						var proteinas = 0;
+						var grasas = 0;
+						
+						var totalCalorias = objCliente.calorias / 5;
 						
 						$.each(resp, function(key, tr){
 							elemento = $('<tr><td>' + tr.nombre + '</td><td class="text-right">' + (tr.cantidad * 100) + '</td><tr>');
 							plt.find("table").find("tbody").append(elemento);
+							
 							cantidad += parseFloat(tr.cantidad);
+							carbohidratos += parseFloat(tr.carbohidratos);
+							proteinas += parseFloat(tr.proteinas);
+							grasas += parseFloat(tr.grasas);
 							
 							elemento.click(function(){
 								var el = $(this);
@@ -45,6 +54,13 @@ function getPanelConsumo(){
 							});
 						});
 						
+						console.log(parseFloat(carbohidratos) + parseFloat(proteinas) + parseFloat(grasas));
+						console.log(totalCalorias);
+							
+						if (carbohidratos + proteinas + grasas > totalCalorias){
+							alert("Sobre pasa el límite");
+						}
+							
 						cantidad *= 100;
 						plt.find("[campo=totalGramos]").html(cantidad + " g");
 						plt.find(".btnPlantilla").hide();
