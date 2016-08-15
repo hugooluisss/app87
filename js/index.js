@@ -39,6 +39,10 @@ $(document).ready(function(){
 				getPanelConsumo();
 			});
 			
+			$("#menuPrincipal [liga=avance]").click(function(){
+				getPanelAvance();
+			});
+			
 			//Opciones del menú
 			$("#menuPrincipal [liga=salir]").click(function(){
 				alertify.confirm("¿Seguro?", function(e){
