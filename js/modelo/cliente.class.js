@@ -182,4 +182,20 @@ TCliente = function(){
 					fn.after(data);
 			}, "json");
 	};
+	
+	this.getHistorialPeso = function(fn){
+		if (fn.before !== undefined) fn.before();
+		
+		$.post(server + 'cclientes', {
+				"id": self.idCliente,
+				"action": 'getPeso',
+				"movil": '1'
+			}, function(data){
+				if (data.length > 0)
+					console.log(data);
+					
+				if (fn.after !== undefined)
+					fn.after(data);
+			}, "json");
+	}
 };
