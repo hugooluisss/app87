@@ -2,10 +2,10 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->  
 	<widget xmlns   = "http://www.w3.org/ns/widgets"  
 		xmlns:gap = "http://phonegap.com/ns/1.0"  
-		id    = "com.cpymes.87x100"  
+		id    = "com.cpymes.87xciento"  
 		version  = "1.0.0">  
 		
-		<name>75%</name>  
+		<name>75xciento</name>  
 		<description>Control del régimen alimenticio</description>  
 		<author href="http://www.cpymes.com.mx" email="hugooluisss@gmail.com"></author>  
 		<!--  
