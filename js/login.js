@@ -95,7 +95,7 @@ function loadLogin(){
 				var obj = new TCliente;
 				form = $(form);
 				
-				obj.registrar("", form.find("#txtNombre").val(), form.find("#selSexo").val(), form.find("#txtUsuario").val(), form.find("#txtPass").val(), form.find("#txtNacimiento").val(), true, {
+				obj.registrar("", form.find("#txtNombre").val(), form.find("#selSexo").val(), form.find("#txtUsuario").val(), form.find("#txtPass").val(), form.find("#txtNacimiento").val(), true, 1, {
 					before: function(){
 						form.find("[type=submit]").prop("disabled", true);
 					},
