@@ -36,11 +36,12 @@ function loadLogin(){
 							alertify.alert("Tus datos no son válidos");
 							$("#frmLogin [type=submit]").prop("disabled", false);
 						}else{
-							var cliente = new TCliente;
-							
-							setInterval(function(){
-								location.reload(true);
-							}, 3000);
+						
+							var cliente = new TCliente({
+								after: function(){
+									location.reload(true);
+								}
+							});
 						}
 					}
 				});

@@ -1,5 +1,6 @@
-TCliente = function(){
+TCliente = function(fn){
 	var self = this;
+	self.contFn = 0;
 	//Lo primero que debo de hacer es ver si hay datos, si no los tengo que traer del server
 	this.getDatos = function(){
 		var cliente = window.localStorage.getItem("cliente");
@@ -27,6 +28,13 @@ TCliente = function(){
 					window.localStorage.removeItem("cliente");
 					window.localStorage.setItem("cliente", JSON.stringify(data));
 					console.log("SERVER ", data);
+					
+					if (fn !== undefined){
+						if (fn.after !== undefined && self.contFn == 0){
+							self.contFn++;
+							fn.after();
+						}
+					}
 			}, "json");
 		}else{
 			var data = JSON.parse(cliente);
@@ -48,6 +56,13 @@ TCliente = function(){
 			self.nombreActividad = data.nombreActividad;
 			
 			//window.localStorage.removeItem("cliente");
+			
+			if (fn !== undefined){
+				if (fn.after !== undefined && self.contFn == 0){
+					self.contFn++;
+					fn.after();
+				}
+			}
 		}
 	}
 	
