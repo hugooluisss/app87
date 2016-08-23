@@ -128,8 +128,8 @@ $(document).ready(function(){
 				console.log("Suscripcion OK");
 				setTimeout(checkSuscripcion, 360000);
 			}else{
-				navigator.app.loadUrl(server + 'planes', { openExternal:true });
 				usuario.logout();
+				navigator.app.loadUrl(server + 'planes', { openExternal:true });
 			}
 		}, "json");
 	}
