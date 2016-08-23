@@ -19,7 +19,7 @@ $(document).ready(function(){
 			$("#menu").html(resp);
 			$("body").addClass("conmenu");
 			
-			//$("#fotoPerfil").attr("src", server + "repositorio/imagenesUsuarios/img_" + usuario.getId() + ".jpg?" + Math.random());
+			$("#fotoPerfil").attr("src", server + "repositorio/imagenesUsuarios/img_" + usuario.getId() + ".jpg?" + Math.random());
 			
 			$("#menuPrincipal a").click(function(){
 				$('#menuPrincipal').parent().removeClass("in");
@@ -62,7 +62,7 @@ $(document).ready(function(){
 							$("#fotoPerfil").attr("src", imageData);
 							subirFotoPerfil(imageData);
 						}, function(message){
-							alert("Ocurrió un error al subir la imagen");
+							alertify.error("Ocurrio un error al subir la imagen");
 					        setTimeout(function() {
 					        	$("#mensajes").fadeOut(1500).removeClass("alert-danger");
 					        }, 5000);
@@ -73,6 +73,7 @@ $(document).ready(function(){
 							targetHeight: 250
 						});
 				}else{
+					alertify.error("No se pudo iniciar la cámara");
 					console.log("No se pudo inicializar la cámara");
 				}
 			});
@@ -111,9 +112,9 @@ $(document).ready(function(){
 		        console.log("Response = " + r.response);
 		        console.log("Sent = " + r.bytesSent);
 		        
-		        alert("La fotografía se cargó con éxito");
+		        alertify.success("La fotografía se cargó con éxito");
 			}, function(error){
-		        alert("No se pudo subir la imagen al servidor " + error.target);
+				alertify.error("No se pudo subir la imagen al servidor" + error.target);
 			    console.log("upload error source " + error.source);
 			    console.log("upload error target " + error.target);
 			}, options);

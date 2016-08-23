@@ -12,9 +12,7 @@ function getPanelAvance(){
 			after: function(data){
 				if (data.length > 0 ){
 					google.charts.load("current", {packages:["corechart"]});
-					google.charts.setOnLoadCallback(drawChart);
-					
-					function drawChart() {
+					google.charts.setOnLoadCallback(function(){
 						var datos = [];
 						datos.push(["fecha", "peso"]);
 						anterior = -1;
@@ -46,11 +44,10 @@ function getPanelAvance(){
 							colors: ['green'],
 							is3D: true
 						};
-						var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
+						var chart = new google.visualization.SteppedAreaChart($('#chart_div')[0]);
 						
 						chart.draw(puntos, options);
-					}
-					
+					});
 				}
 			}
 		});
