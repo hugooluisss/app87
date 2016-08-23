@@ -9,7 +9,8 @@ $(document).ready(function(){
 		checkSuscripcion();
 	}else{
 		loadLogin();
-		$("#modulo").css("min-height", (screen.height - 200) + "px");
+		$("#modulo").css("min-height", (screen.height - 400) + "px");
+		console.log(screen.height);
 	}
 	
 	function getMenu(){
