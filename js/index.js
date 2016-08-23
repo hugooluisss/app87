@@ -9,6 +9,7 @@ $(document).ready(function(){
 		checkSuscripcion();
 	}else{
 		loadLogin();
+		$("#modulo").css("min-height", (screen.height - 200) + "px");
 	}
 	
 	function getMenu(){
