@@ -103,7 +103,7 @@ $(document).ready(function(){
 		
 		var params = new Object();
 		params.identificador = usuario.getId();
-		
+		console.log(usuario.getId());
 		options.params = params;
 		
 		var ft = new FileTransfer();
