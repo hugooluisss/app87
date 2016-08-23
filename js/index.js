@@ -9,7 +9,7 @@ $(document).ready(function(){
 		getPanel();
 		getMenu();
 		
-		//checkSuscripcion();
+		checkSuscripcion();
 	}else{
 		loadLogin();
 	}
@@ -120,7 +120,7 @@ $(document).ready(function(){
 	}
 	
 	function checkSuscripcion(){
-		$.post(server + "cempresa", {
+		$.post(server + "csuscripcion", {
 			"action": "getSuscripcion",
 			"id": usuario.getId()
 		}, function(resp){
@@ -128,7 +128,7 @@ $(document).ready(function(){
 				console.log("Suscripcion OK");
 				setTimeout(checkSuscripcion, 360000);
 			}else{
-				navigator.app.loadUrl('http://cventas.cpymes.com.mx/planes', { openExternal:true });
+				navigator.app.loadUrl(server + 'planes', { openExternal:true });
 				usuario.logout();
 			}
 		}, "json");

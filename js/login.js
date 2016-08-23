@@ -79,13 +79,17 @@ function loadLogin(){
 				},
 				txtNacimiento: {
 					required : true
+				},
+				chkTerminos: {
+					required: true
 				}
 			},
 			wrapper: 'span', 
 			messages: {
 				txtUsuario: {
 					remote: "Este correo ya se encuentra registrado"
-				}
+				},
+				chkTerminos: "Es necesario aceptar los términos y condiciones"
 			},
 			submitHandler: function(form){
 				var obj = new TCliente;
@@ -134,5 +138,16 @@ function loadLogin(){
 				}
 			}, $("#frmLogin").find("#txtUsuario").val());
 		});
+		
+		$("#lnkTerminos").click(function(){
+			$("#winTerminos").modal();
+		});
+		
+		$.post(server + 'cconfiguracion', {
+			"action": "get",
+			"campo": "terminos"
+		}, function(resp){
+			$("#winTerminos").find(".modal-body").html(resp.valor);
+		}, "json");
 	});
 };
