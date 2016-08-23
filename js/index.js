@@ -10,8 +10,7 @@ $(document).ready(function(){
 	}else{
 		loadLogin();
 		$("#modulo").css("min-height", (screen.height - 500) + "px");
-		alert(screen.height);
-		console.log(screen.height - 500);
+		alert(screen.height + ' ' + screen.availHeight + ' ' + screen.pixelDepth + ' ' + $(document).height());
 	}
 	
 	function getMenu(){
