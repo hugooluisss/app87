@@ -56,7 +56,7 @@ $(document).ready(function(){
 			});
 			
 			
-			$("#fotoPerfil").click(function(){
+			$("#btnCamara").click(function(){
 				if (navigator.camera != undefined){
 					navigator.camera.getPicture(function(imageData) {
 							$("#fotoPerfil").attr("src", imageData);
