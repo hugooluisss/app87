@@ -53,11 +53,30 @@ function getPanelMisDatos(){
 			"movil": '1'
 		}, function(datos){
 			$.each(datos, function (index, row){
-				$("#frmDatos").find("#selFrecuencia").append('<option value="' + row.idFrecuencia + '" nombre="' + row.nombre + '">' + row.nombre + ' - ' + row.descripcion +'</option>');
+				$("#winFrecuencias").find(".modal-body").find(".list-group").append('<a href="#" identificador="' + row.idFrecuencia + '" class="list-group-item"><h5 class="list-group-item-heading">' + row.nombre + '</h5><p class="list-group-item-text">' + row.descripcion + '</p></a>');
+				
+				if (cliente.idFrecuencia == row.idFrecuencia){
+					$("#txtFrecuencia").val(row.nombre);
+					$("#txtFrecuencia").attr("identificador", row.idFrecuencia);
+				}
+				
+			});
+			
+			$("#winFrecuencias").find(".modal-body").find(".list-group").find("a").click(function(){
+				var el = $(this).find(".list-group-item-heading").html();
+				
+				$("#txtFrecuencia").val(el);
+				$("#txtFrecuencia").attr("identificador", $(this).attr("identificador"));
+				
+				$("#winFrecuencias").modal("hide");
 			});
 			
 			$("#frmDatos").find("#selFrecuencia").val(cliente.idFrecuencia);
 		}, "json");
+		
+		$("#txtFrecuencia").click(function(){
+			$("#winFrecuencias").modal();
+		});
 		
 		$("#txtActividad").click(function(){
 			$("#winResultados").modal("hide");
@@ -92,7 +111,7 @@ function getPanelMisDatos(){
 											alertify.success("Datos actualizados"); 
 											$("#txtActividad").val(data.nombre);
 											$("#txtActividad").attr("actividad", data.idActividad);
-											alert(data.idActividad);
+											//alert(data.idActividad);
 											cliente.idActividad = data.idActividad;
 											cliente.nombreActividad = data.nombre;
 											cliente.save();
@@ -122,7 +141,8 @@ function getPanelMisDatos(){
 				txtEdad: {
 					required: true,
 					min: 5
-				}
+				},
+				txtFrecuencia: "required"
 			},
 			wrapper: 'span',
 			messages: {
@@ -133,7 +153,7 @@ function getPanelMisDatos(){
 			submitHandler: function(form){
 				var momento = new TMomento;
 				console.log($("#selObjetivo").val());
-				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#selFrecuencia").val(), $("#selObjetivo").val(), {
+				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtFrecuencia").attr("identificador"), $("#selObjetivo").val(), {
 					before: function(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", true);
 						alertify.log("Espera un momento, estamos actualizando tus datos..."); 
@@ -149,9 +169,9 @@ function getPanelMisDatos(){
 							$("#txtIMC").val(cliente.calcularIMC());
 							$("#txtPGCE").val(cliente.calcularPGCE());
 							$("#txtBMR").val(cliente.calcularBMR());
-							cliente.idFrecuencia = $("#selFrecuencia").val();
-							cliente.nombreFrecuencia = $("#selFrecuencia").attr("nombre");
-							cliente.idObjetivo = $("#selObjetivo").val();
+							cliente.idFrecuencia = $("#txtFrecuencia").attr("identificador");
+							cliente.nombreFrecuencia = $("#txtFrecuencia").val();
+							cliente.objetivo = $("#selObjetivo").val();
 							cliente.save();
 							$("#imgEstado").prop("src", "img/obeso_" + cliente.sexo + "_" + resp.magro.idObesidad + ".png");
 							$("[campo=obesidad]").html(resp.magro.nombre);

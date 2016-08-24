@@ -83,6 +83,7 @@ TUsuario = function(){
 		if (fn.before != undefined) fn.before();
 		
 		window.localStorage.clear();
+		console.log("Sesión borrada");
 		
 		if (fn.after != undefined) fn.after();
 	}

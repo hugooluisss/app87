@@ -4,6 +4,7 @@ TCliente = function(fn){
 	//Lo primero que debo de hacer es ver si hay datos, si no los tengo que traer del server
 	this.getDatos = function(){
 		var cliente = window.localStorage.getItem("cliente");
+		
 		if (cliente == '' || cliente == undefined){
 			usuario = new TUsuario;
 			$.post(server + 'cclientes', {
@@ -24,6 +25,7 @@ TCliente = function(fn){
 					self.fecha = data.fecha;
 					self.calorias = data.calorias;
 					self.idActividad = data.idActividad;
+					self.nombreActividad = data.nombreActividad;
 					
 					window.localStorage.removeItem("cliente");
 					window.localStorage.setItem("cliente", JSON.stringify(data));
@@ -80,7 +82,7 @@ TCliente = function(fn){
 		obj.estatura = self.estatura;
 		obj.idFrecuencia = self.idFrecuencia;
 		obj.nombreFrecuencia = self.nombreFrecuencia;
-		obj.objetivo = self.idObjetivo;
+		obj.objetivo = self.objetivo;
 		obj.calorias = self.calorias;
 		obj.idActividad = self.idActividad;
 		obj.nombreActividad = self.nombreActividad;

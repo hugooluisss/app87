@@ -1,7 +1,7 @@
 @import "md/material-design-color-palette.less";
 @import "funciones.less";
 
-@anchoMenuColapsed: 200px;
+@anchoMenuColapsed: 100%;
 
 body{
 	.degrada(90, #b3b3b3, #fff, #fff);
@@ -46,11 +46,20 @@ body{
 		background: url("../img/bg-login.png");
 		width: @anchoMenuColapsed;
 		float: right;
-		max-height: 380px;
+		//max-height: 800px;
+		//position: absolute;
+		z-index: -1;
+		width: 100%;
+		min-height: 100%;
+		height: auto !important;
+		position: fixed;
+		top:0; 
+		left:0;
+		margin-top: 50px;
 		
 		img{
 			margin-top: 10px;
-			width: 80%;
+			width: 60%;
 		}
 		
 		.navbar-nav > li > a{
@@ -87,6 +96,11 @@ body{
 		.navbar-collapse{
 			background: none;
 			width: auto;
+			margin-top: 0px;
+			position: absolute;
+			top: auto; 
+			left: auto;
+			right: 10px;
 
 			.navbar-nav > li > a{
 				&, &:hover, &:focus, &:first-child{

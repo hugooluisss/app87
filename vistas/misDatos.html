@@ -5,7 +5,7 @@
 		<br />
 		<label for="sr-only">Fecha de nacimiento</label>
 		<div class="form-group has-feedback">
-			<input type="date" class="form-control" placeholder="Fecha de nacimiento" id="txtNacimiento" name="txtNacimiento" autocomplete="no">
+			<input type="date" class="form-control" placeholder="Fecha de nacimiento (YYYY-MM-DD)" id="txtNacimiento" name="txtNacimiento" autocomplete="no">
 			<span class="glyphicon glyphicon-calendar form-control-feedback"></span>
 		</div>
 		<label for="sr-only">Edad</label>
@@ -23,9 +23,18 @@
 			<input type="number" min="1" class="form-control text-right" placeholder="Peso en kg" id="txtPeso" name="txtPeso" autocomplete="no" value="1">
 			<span class="input-group-addon">kg</span>
 		</div>
+		<!--
 		<div class="form-group">
 			<label for="sr-only">Frecuencia de la actividad</label>
 			<select id="selFrecuencia" name="selFrecuencia" class="form-control" style="width: 100%"></select>
+		</div>
+		-->
+		<label for="sr-only">Frecuencia de la actividad</label>
+		<div class="input-group has-feedback">
+			<input type="text" class="form-control setHand" placeholder="Tap para buscar" id="txtFrecuencia" name="txtFrecuencia" autocomplete="no" readonly="true" />
+			<span class="input-group-addon">
+				<span class="glyphicon glyphicon-hand-up"></span>
+			</span>
 		</div>
 		
 		<!--
@@ -64,6 +73,24 @@
 			</div>
 			<div class="modal-body" style="overflow: scroll">
 				<div class="list-group overflow-x">Obteniendo datos</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="winFrecuencias" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Lista de actividades</h4>
+			</div>
+			<div class="modal-body" style="overflow: scroll">
+				<div class="list-group overflow-x"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

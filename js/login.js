@@ -1,4 +1,7 @@
 function loadLogin(){
+	var objUsuario = new TUsuario;
+	objUsuario.logout({});
+							
 	$.get("vistas/login.html", function(resp){
 		$("body").addClass("login");
 		$("#modulo").html(resp);
@@ -36,7 +39,6 @@ function loadLogin(){
 							alertify.alert("Tus datos no son válidos");
 							$("#frmLogin [type=submit]").prop("disabled", false);
 						}else{
-						
 							var cliente = new TCliente({
 								after: function(){
 									location.reload(true);
@@ -90,7 +92,8 @@ function loadLogin(){
 				txtUsuario: {
 					remote: "Este correo ya se encuentra registrado"
 				},
-				chkTerminos: "Es necesario aceptar los términos y condiciones"
+				chkTerminos: "Es necesario aceptar los términos y condiciones",
+				txtNacimiento: "Indica tu fecha de nacimiento"
 			},
 			submitHandler: function(form){
 				var obj = new TCliente;
@@ -106,10 +109,11 @@ function loadLogin(){
 						if (data.band == false){
 							alertify.error("Ocurrió un error al registrar la cuenta, inténtelo más tarde");
 						}else{
-							if (form.find("#selSexo").val() == 'H')
+							if (form.find("#selSexo").val() == 'M')
 								alertify.success("<b>Bienvenido " + form.find("#txtNombre").val() + "</b>, haz quedado registrado");
 							else
-								alertify.success("<b>Bienvenida " + form.find("#txtNombre").val() + "</b>, haz quedado registrado");
+								alertify.success("<b>Bienvenida " + form.find("#txtNombre").val() + "</b>, haz quedado registrada");
+							
 							setTimeout(function(){location.reload(true)}, 3000);
 						}
 					}
