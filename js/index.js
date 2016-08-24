@@ -9,8 +9,8 @@ $(document).ready(function(){
 		checkSuscripcion();
 	}else{
 		loadLogin();
-		$("#modulo").css("min-height", (screen.height - 500) + "px");
-		alert(screen.height + ' ' + screen.availHeight + ' ' + screen.pixelDepth + ' ' + $(document).height());
+		$("#modulo").css("min-height", ($(document).height()) + "px");
+		//alert(screen.height + ' ' + screen.availHeight + ' ' + screen.pixelDepth + ' ' + $(document).height());
 	}
 	
 	function getMenu(){
