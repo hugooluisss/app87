@@ -69,7 +69,9 @@ $(document).ready(function(){
 							quality: 50,
 							destinationType: Camera.DestinationType.FILE_URI,
 							targetWidth: 250,
-							targetHeight: 250
+							targetHeight: 250,
+							correctOrientation: true,
+							allowEdit: true
 						});
 				}else{
 					alertify.error("No se pudo iniciar la cámara");
@@ -89,6 +91,13 @@ $(document).ready(function(){
 			$("[campo=altura]").html(cliente.estatura);
 			$("[campo=edad]").html(cliente.calcularEdad(false));
 			$("[campo=ultimaActualizacion]").html(cliente.fecha);
+			
+			if (cliente.fecha == '')
+				getPanelMisDatos();
+			
+			$("#btnMisDatos").click(function(){
+				getPanelMisDatos();
+			});
 		});
 	}
 	

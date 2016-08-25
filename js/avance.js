@@ -14,13 +14,15 @@ function getPanelAvance(){
 					google.charts.load("current", {packages:["corechart"]});
 					google.charts.setOnLoadCallback(function(){
 						var datos = [];
-						datos.push(["fecha", "peso"]);
+						datos.push(["fecha", "peso", { role: 'style' }]);
 						anterior = -1;
 						actual = -1;
 						$.each(data, function(i, el){
-							datos.push([el.fecha, parseFloat(el.peso)]);
+							datos.push([el.fecha, parseFloat(el.peso), parseFloat(el.peso).toFixed(2) <= actual?"green":"red"]);
 							anterior = actual;
 							actual = el.peso;
+							
+							$("#tblAvance").append('<tr><td>' + el.fecha + '</td><td>' + parseFloat(el.peso).toFixed(2) + '</td></tr>');
 						});
 						
 						if (anterior > actual)
@@ -37,8 +39,7 @@ function getPanelAvance(){
 							legend: { position: 'none' },
 							vAxis: {minValue: 40},
 							hAxis:{
-								slantedText: true,
-								slantedTextAngle: 90,
+								textPosition: 'none'
 							},
 							areaOpacity: 0.2,
 							colors: ['green'],
