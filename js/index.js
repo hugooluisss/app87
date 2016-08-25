@@ -66,7 +66,7 @@ $(document).ready(function(){
 					        	$("#mensajes").fadeOut(1500).removeClass("alert-danger");
 					        }, 5000);
 						}, { 
-							quality: 50,
+							quality: 80,
 							destinationType: Camera.DestinationType.FILE_URI,
 							targetWidth: 250,
 							targetHeight: 250,
