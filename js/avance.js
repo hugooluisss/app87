@@ -1,3 +1,4 @@
+var bandAvance = false;
 function getPanelAvance(){
 	$.get("vistas/avance.html", function(resp){
 		$(".navbar-title").html("Avances");
@@ -11,14 +12,19 @@ function getPanelAvance(){
 			},
 			after: function(data){
 				if (data.length > 0 ){
-					google.charts.load("current", {packages:["corechart"]});
+					if (!bandAvance){
+						google.charts.load("current", {packages:["corechart"]});
+						bandAvance = true;
+					}
+					
 					google.charts.setOnLoadCallback(function(){
 						var datos = [];
-						datos.push(["fecha", "peso", { role: 'style' }]);
+						datos.push(["Fecha", "Peso", { role: 'style' }]);
 						anterior = -1;
 						actual = -1;
+						
 						$.each(data, function(i, el){
-							datos.push([el.fecha, parseFloat(el.peso), parseFloat(el.peso).toFixed(2) <= actual?"green":"red"]);
+							datos.push([el.fecha, parseFloat(parseFloat(el.peso).toFixed(2)), parseFloat(el.peso).toFixed(2) <= actual?"green":"red"]);
 							anterior = actual;
 							actual = el.peso;
 							

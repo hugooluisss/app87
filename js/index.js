@@ -98,6 +98,10 @@ $(document).ready(function(){
 			$("#btnMisDatos").click(function(){
 				getPanelMisDatos();
 			});
+			
+			$("#btnMiAvance").click(function(){
+				getPanelAvance();
+			});
 		});
 	}
 	
