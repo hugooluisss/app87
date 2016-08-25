@@ -63,6 +63,7 @@ function getPanelMisDatos(){
 			});
 			
 			$("#winFrecuencias").find(".modal-body").find(".list-group").find("a").click(function(){
+				$("#winFrecuencias .modal-body").css("height", ($(document).height() - $(document).height() * 0.3) + "px");
 				var el = $(this).find(".list-group-item-heading").html();
 				
 				$("#txtFrecuencia").val(el);
@@ -81,6 +82,8 @@ function getPanelMisDatos(){
 		$("#txtActividad").click(function(){
 			$("#winResultados").modal("hide");
 			$("#winActividad").modal();
+			
+			$("#winActividad .modal-body").css("height", ($(document).height() - $(document).height() * 0.2) + "px");
 			
 			if (actividades == undefined){
 				$.get("vistas/listaActividades.html", function(resp){
@@ -108,10 +111,11 @@ function getPanelMisDatos(){
 										alertify.log("Estamos actualizando la actividad que realizarás... espera un momento"); 
 									}, after: function(result){
 										if (result.band){
-											alertify.success("Datos actualizados"); 
+											alertify.success("Datos actualizados");
+											
 											$("#txtActividad").val(data.nombre);
 											$("#txtActividad").attr("actividad", data.idActividad);
-											//alert(data.idActividad);
+											
 											cliente.idActividad = data.idActividad;
 											cliente.nombreActividad = data.nombre;
 											cliente.save();
