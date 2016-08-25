@@ -4,13 +4,15 @@ function getPanelMisDatos(){
 		$(".navbar-title").html("Mis datos");
 		$("#winActividad .modal-body").css("max-height", (screen.height - 200) + "px");
 		
+		$("#btnConsumo").hide();
+		
 		$("#modulo").html(resp);
 		var usuario = new TUsuario;
 		var cliente = new TCliente;
 		
 		$("[campo=sexo]").html(cliente.sexo == 'M'?'<i class="fa fa-male" aria-hidden="true"></i> Masculino':'<i class="fa fa-female" aria-hidden="true"></i> Femenino');
 		
-		$("#txtNacimiento").datepicker({});
+		//$("#txtNacimiento").datepicker({});
 		$("#txtNacimiento").val(cliente.nacimiento);
 		
 		$("#txtEdad").val(cliente.calcularEdad(false));
@@ -18,6 +20,7 @@ function getPanelMisDatos(){
 		$("#txtAltura").val(cliente.estatura);
 		$("#txtActividad").val(cliente.nombreActividad);
 		$("#txtActividad").attr("actividad", cliente.idActividad);
+		
 		
 		$("#txtIMC").val(cliente.calcularIMC());
 		$("#txtPGCE").val(cliente.calcularPGCE());
@@ -80,10 +83,14 @@ function getPanelMisDatos(){
 		});
 		
 		$("#txtActividad").click(function(){
+			clickActividad();
+		});
+		
+		function clickActividad(){
 			$("#winResultados").modal("hide");
-			$("#winActividad").modal();
+			$("#winActividad").modal("show");
 			
-			$("#winActividad .modal-body").css("height", ($(document).height() - $(document).height() * 0.2) + "px");
+			$("#winActividad .modal-body").css("max-height", ($(document).height() - $(document).height() * 0.5) + "px");
 			
 			if (actividades == undefined){
 				$.get("vistas/listaActividades.html", function(resp){
@@ -122,6 +129,9 @@ function getPanelMisDatos(){
 											
 											$("#winActividad").modal("hide");
 											$("#winResultados").modal("show");
+											$("#txtIMC").focus();
+											$("#txtActividad").removeClass("alerta");
+											$("#btnConsumo").show();
 										}else
 											alertifu.error("Ocurrió un error y no se realizó la actualización");
 									}
@@ -133,8 +143,13 @@ function getPanelMisDatos(){
 					}, "json");
 				});
 			}
-		});
+		}
 		
+		$("#btnConsumo").click(function(){
+			$("#winResultados").modal("hide");
+			setTimeout(function(){getPanelConsumo()}, 900);
+		});
+								
 		$("#frmDatos").validate({
 			debug: false,
 			errorClass: "validateError",
@@ -179,7 +194,21 @@ function getPanelMisDatos(){
 							cliente.save();
 							$("#imgEstado").prop("src", "img/obeso_" + cliente.sexo + "_" + resp.magro.idObesidad + ".png");
 							$("[campo=obesidad]").html(resp.magro.nombre);
-							$("#winResultados").modal();
+							
+							$("#winResultados .modal-body").css("max-height", ($(document).height() - $(document).height() * 0.4) + "px");
+							
+							if (cliente.idActividad == ''){
+								$("#winResultados").modal("show");
+								$("#txtActividad").addClass("alerta");
+								alertify.error("Es necesario que nos indiques la actividad que deseas realizar...");
+								
+								$("#btnConsumo").hide();
+								clickActividad();
+							}else{
+								$("#winResultados").modal();
+								
+								$("#btnConsumo").show();
+							}
 						}else{
 							alertify.error("No se pudo actualizar la información, inténtalo mas tarde"); 
 						}

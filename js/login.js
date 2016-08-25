@@ -10,8 +10,8 @@ function loadLogin(){
 			$(this).tab('show');
 		});
 		
-		$('.selectpicker').selectpicker({});
-		$("#txtNacimiento").datepicker({});
+		//$('.selectpicker').selectpicker({});
+		//$("#txtNacimiento").datepicker({});
 		
 		$("#frmLogin").find("#txtUsuario").focus();
 		$("#frmLogin").validate({

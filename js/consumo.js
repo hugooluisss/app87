@@ -85,9 +85,15 @@ function getPanelConsumo(){
 				alertify.log("Estamos obteniendo los datos del servidor..."); 
 			},
 			after: function(resp){
+				var primera = false;
 				$.each(resp, function(i, el){
 					var plt = pComida;
 					plt = $(plt);
+					if (!primera){
+						plt.find(".panel-collapse").addClass("in");
+						primera = true;
+					}
+					
 					$.each(el, function(key, value){
 						plt.find("[campo=" + key + "]").html(value);
 					})
