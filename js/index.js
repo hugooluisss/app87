@@ -42,6 +42,10 @@ $(document).ready(function(){
 				getPanelAvance();
 			});
 			
+			$("#menuPrincipal [liga=perfil]").click(function(){
+				getPanelPerfil();
+			});
+			
 			//Opciones del menú
 			$("#menuPrincipal [liga=salir]").click(function(){
 				alertify.confirm("¿Seguro?", function(e){
@@ -105,33 +109,6 @@ $(document).ready(function(){
 		});
 	}
 	
-	function subirFotoPerfil(imageURI){
-		var usuario = new TUsuario;
-		var options = new FileUploadOptions();
-		
-		options.fileKey = "file";
-		options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
-		options.mimeType = "image/jpeg";
-		
-		var params = new Object();
-		params.identificador = usuario.getId();
-		console.log(usuario.getId());
-		options.params = params;
-		
-		var ft = new FileTransfer();
-		ft.upload(imageURI, encodeURI(server + "?mod=cusuarios2&action=uploadImagenPerfil"), function(r){
-				console.log("Code = " + r.responseCode);
-		        console.log("Response = " + r.response);
-		        console.log("Sent = " + r.bytesSent);
-		        
-		        alertify.success("La fotografía se cargó con éxito");
-			}, function(error){
-				alertify.error("No se pudo subir la imagen al servidor" + error.target);
-			    console.log("upload error source " + error.source);
-			    console.log("upload error target " + error.target);
-			}, options);
-	}
-	
 	function checkSuscripcion(){
 		$.post(server + "csuscripcion", {
 			"action": "getSuscripcion",
@@ -147,3 +124,30 @@ $(document).ready(function(){
 		}, "json");
 	}
 });
+
+function subirFotoPerfil(imageURI){
+	var usuario = new TUsuario;
+	var options = new FileUploadOptions();
+	
+	options.fileKey = "file";
+	options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
+	options.mimeType = "image/jpeg";
+	
+	var params = new Object();
+	params.identificador = usuario.getId();
+	console.log(usuario.getId());
+	options.params = params;
+	
+	var ft = new FileTransfer();
+	ft.upload(imageURI, encodeURI(server + "?mod=cusuarios2&action=uploadImagenPerfil"), function(r){
+			console.log("Code = " + r.responseCode);
+	        console.log("Response = " + r.response);
+	        console.log("Sent = " + r.bytesSent);
+	        
+	        alertify.success("La fotografía se cargó con éxito");
+		}, function(error){
+			alertify.error("No se pudo subir la imagen al servidor" + error.target);
+		    console.log("upload error source " + error.source);
+		    console.log("upload error target " + error.target);
+		}, options);
+}

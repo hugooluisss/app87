@@ -38,6 +38,7 @@
 				cancel : "<a href=\"#\" class=\"btn btn-danger\" id=\"alertify-cancel\">{{cancel}}</a>"
 			},
 			input   : "<input type=\"text\" class=\"alertify-text\" id=\"alertify-text\">",
+			password   : "<input type=\"password\" class=\"alertify-text\" id=\"alertify-text\">",
 			message : "<p class=\"alertify-message\">{{message}}</p>",
 			log     : "<article class=\"alertify-log{{class}}\">{{message}}</article>"
 		};
@@ -85,6 +86,7 @@
 				    btnOK     = $("alertify-ok")     || undefined,
 				    btnCancel = $("alertify-cancel") || undefined,
 				    input     = $("alertify-text")   || undefined,
+				    password  = $("alertify-text")   || undefined,
 				    form      = $("alertify-form")   || undefined,
 				    hasOK     = (typeof btnOK !== "undefined"),
 				    hasCancel = (typeof btnCancel !== "undefined"),
@@ -186,12 +188,13 @@
 
 				html += "<div class=\"alertify-dialog\">";
 
-				if (type === "prompt") html += "<form id=\"alertify-form\">";
+				if (type === "prompt" || type === "password") html += "<form id=\"alertify-form\">";
 
 				html += "<article class=\"alertify-inner\">";
 				html += dialogs.message.replace("{{message}}", message);
 
 				if (type === "prompt") html += dialogs.input;
+				if (type === "password") html += dialogs.password;
 
 				html += dialogs.buttons.holder;
 				html += "</article>";
@@ -206,7 +209,7 @@
 					html = html.replace("{{buttons}}", dialogs.buttons.ok + dialogs.buttons.cancel);
 					html = html.replace("{{ok}}", this.labels.ok).replace("{{cancel}}", this.labels.cancel);
 					break;
-				case "prompt":
+				case "prompt": case 'password':
 					html = html.replace("{{buttons}}", dialogs.buttons.submit + dialogs.buttons.cancel);
 					html = html.replace("{{ok}}", this.labels.ok).replace("{{cancel}}", this.labels.cancel);
 					break;
@@ -448,6 +451,7 @@
 			init    : _alertify.init,
 			log     : function (message, type, wait) { _alertify.log(message, type, wait); return this; },
 			prompt  : function (message, fn, placeholder) { _alertify.dialog(message, "prompt", fn, placeholder); return this; },
+			password  : function (message, fn, placeholder) { _alertify.dialog(message, "password", fn, placeholder); return this; },
 			success : function (message, wait) { _alertify.log(message, "success", wait); return this; },
 			error   : function (message, wait) { _alertify.log(message, "error", wait); return this; },
 			set     : function (args) { _alertify.set(args); },

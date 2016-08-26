@@ -11,6 +11,16 @@ function getPanelConsumo(){
 		$(".navbar-title").html("Consumo de alimentos");
 		$("#modulo").html(resp);
 		
+		var objActividad = new TActividad(objCliente.idActividad);
+		objActividad.getData({
+			after: function(){
+				var tabla = $("table#general");
+				tabla.find("[campo=carbohidratos]").text(objCliente.calorias * objActividad.carbohidratos / 100);
+				tabla.find("[campo=proteinas]").text(objCliente.calorias * objActividad.proteinas / 100);
+				tabla.find("[campo=grasas]").text(objCliente.calorias * objActividad.grasas / 100);
+			}
+		});
+		
 		function getAlimentos(idComida){
 			var plt =  $("[plantillaComida=" + idComida + "]");
 			objMenu.getAlimentos(idComida, {
@@ -24,7 +34,11 @@ function getPanelConsumo(){
 					
 					plt.find("table").find("tbody").find("tr").remove();
 					$.each(resp, function(key, tr){
-						elemento = $('<tr><td>' + tr.nombre + '</td><td class="text-right">' + (tr.cantidad * 100) + '</td></tr>');
+						comidaProteinas = parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2);
+						comidaCarbohidratos = parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2);
+						comidaGrasas = parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2);
+						
+						elemento = $('<tr><td>' + tr.nombre + '</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
 						plt.find("table").find("tbody").append(elemento);
 						
 						cantidad += parseFloat(tr.cantidad);
@@ -55,6 +69,10 @@ function getPanelConsumo(){
 					
 					var suma = carbohidratos + proteinas + grasas;
 					plt.find("[campo=sumaCalorias]").html(suma.toFixed(2));
+					plt.find("[campo=sumaCarbohidratos]").html(carbohidratos.toFixed(2));
+					plt.find("[campo=sumaProteinas]").html(proteinas.toFixed(2));
+					plt.find("[campo=sumaGrasas]").html(grasas.toFixed(2));
+					
 					plt.find(".consumo").removeClass("alert-success");
 					plt.find(".consumo").removeClass("alert-danger");
 					plt.find(".consumo").removeClass("alert-warning");

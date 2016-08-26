@@ -2,15 +2,16 @@ TUsuario = function(){
 	var self = this;
 	this.sesion = window.localStorage.getItem("sesion");
 	
-	this.add = function(id, nombre, sexo, email, pass, fn){
+	this.add = function(id, nombre, sexo, email, fn){
 		if (fn.before !== undefined) fn.before();
 		
 		$.post(server + 'cclientes', {
-				"action": "add",
+				"action": "save",
 				"id": id,
 				"nombre": nombre,
-				"sexo": email, 
-				"pass": pass
+				"sexo": sexo,
+				"email": email,
+				"movil": '1'
 			}, function(data){
 				if (data.band == 'false')
 					console.log(data.mensaje);
@@ -22,11 +23,12 @@ TUsuario = function(){
 	
 	this.setPass = function(usuario, pass, fn){
 		if (fn.before !== undefined)
-			fn.before(data);
+			fn.before();
 			
-		$.post(server + 'cusuarios', {
+		$.post(server + 'cclientes', {
 			"action": "setPass",
 			"usuario": usuario,
+			"movil": '1',
 			"pass": pass
 		}, function(data){
 			if (fn.after !== undefined)
