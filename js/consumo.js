@@ -3,6 +3,11 @@ function getPanelConsumo(){
 	var objCliente = new TCliente;
 	var pComida = "";
 	
+	var totalCarbohidratos = 0;
+	var totalProteinas = 0;
+	var totalGrasas = 0;
+	var totalGramos = 0;
+	
 	$.get("vistas/menu/comida.html", function(resultado){
 		pComida = resultado;
 	});
@@ -15,9 +20,73 @@ function getPanelConsumo(){
 		objActividad.getData({
 			after: function(){
 				var tabla = $("table#general");
-				tabla.find("[campo=carbohidratos]").text(objCliente.calorias * objActividad.carbohidratos / 100);
-				tabla.find("[campo=proteinas]").text(objCliente.calorias * objActividad.proteinas / 100);
-				tabla.find("[campo=grasas]").text(objCliente.calorias * objActividad.grasas / 100);
+				
+				totalCarbohidratos = parseFloat(objCliente.calorias * objActividad.carbohidratos / 100 / 4).toFixed(2);
+				totalProteinas = parseFloat(objCliente.calorias * objActividad.proteinas / 100 / 4).toFixed(2);
+				totalGrasas = parseFloat(objCliente.calorias * objActividad.grasas / 100 / 9).toFixed(2);
+				totalGramos = totalCarbohidratos + totalGrasas + totalProteinas;
+				
+				
+				tabla.find("[campo=carbohidratos]").text(totalCarbohidratos);
+				tabla.find("[campo=proteinas]").text(totalProteinas);
+				tabla.find("[campo=grasas]").text(totalGrasas);
+				
+				
+				
+				objMenu.getComidas({
+					before: function(){
+						alertify.log("Estamos obteniendo los datos del servidor..."); 
+					},
+					after: function(resp){
+						var primera = false;
+						$.each(resp, function(i, el){
+							var plt = pComida;
+							plt = $(plt);
+							if (!primera){
+								plt.find(".panel-collapse").addClass("in");
+								primera = true;
+							}
+							
+							$.each(el, function(key, value){
+								plt.find("[campo=" + key + "]").html(value);
+							})
+							
+							plt.find(".panel-title").find("a").attr("href", "#comida" + el.idComida);
+							plt.find(".panel-collapse").attr("id", "comida" + el.idComida);
+							plt.find(".btnAlimentos").attr("comida", el.idComida);
+							plt.find(".btnAlimentos").click(function(){
+								$("#winAlimentos").modal();
+								$("#winAlimentos").find("#comida").val(el.idComida);
+							});
+							
+							plt.attr("plantillaComida", el.idComida);
+							
+							plt.find(".btnPlantilla").click(function(){
+								alertify.confirm("<p>¿Está seguro?</p>", function (e) {
+									if (e){
+										objMenu.setAlimentosPlantilla(el.idComida, {
+											before: function(){
+												alertify.log("Se está cargando la lista, espere por favor...");
+												plt.find(".btnPlantilla").prop("disabled", true);
+											}, after: function(resp){
+												plt.find(".btnPlantilla").prop("disabled", false);
+												
+												if (resp.band){
+													getAlimentos(el.idComida);
+													alertify.success("La plantilla fue cargada con éxito");
+												}else
+													alertify.error("No pudo ser cargada la plantilla");
+											}
+										});
+									}
+								}); 
+							});
+							
+							$("#accordion").append(plt);
+							getAlimentos(el.idComida);
+						});
+					}
+				});
 			}
 		});
 		
@@ -25,26 +94,39 @@ function getPanelConsumo(){
 			var plt =  $("[plantillaComida=" + idComida + "]");
 			objMenu.getAlimentos(idComida, {
 				after: function(resp){
-					var totalCalorias = objCliente.calorias / 5;
-					plt.find("[campo=totalCalorias]").html(totalCalorias);
-					var cantidad = 0;
-					var carbohidratos = 0;
-					var proteinas = 0;
-					var grasas = 0;
+					//var totalCalorias = objCliente.calorias / 5;
+					//plt.find("[campo=totalCalorias]").html(totalCalorias);
 					
-					plt.find("table").find("tbody").find("tr").remove();
+					var cantidad = 0;
+					var carbohidratos = parseFloat(totalCarbohidratos / 5).toFixed(2);
+					var proteinas = parseFloat(totalProteinas / 5).toFixed(2);
+					var grasas = parseFloat(totalGrasas / 5).toFixed(2);
+					var c = 0;
+					var p = 0;
+					var g = 0;
+					
+					plt.find("#consumo").find("[campo=proteinas]").text(proteinas);
+					plt.find("#consumo").find("[campo=carbohidratos]").text(carbohidratos);
+					plt.find("#consumo").find("[campo=grasas]").text(grasas);
+					
+					
+					plt.find("#lstAlimentos").find("tbody").find("tr").remove();
 					$.each(resp, function(key, tr){
 						comidaProteinas = parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2);
 						comidaCarbohidratos = parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2);
 						comidaGrasas = parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2);
 						
 						elemento = $('<tr><td>' + tr.nombre + '</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
-						plt.find("table").find("tbody").append(elemento);
+						plt.find("#lstAlimentos").find("tbody").append(elemento);
 						
 						cantidad += parseFloat(tr.cantidad);
-						carbohidratos += parseFloat(tr.carbohidratos) * tr.cantidad * 4;
-						proteinas += parseFloat(tr.proteinas) * tr.cantidad * 4;
-						grasas += parseFloat(tr.grasas) * tr.cantidad * 9;
+						carbohidratos -= parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2);
+						proteinas -= parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2);
+						grasas -= parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2);
+						
+						c += parseFloat(parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2));
+						p += parseFloat(parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2));
+						g += parseFloat(parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2));
 						
 						elemento.click(function(){
 							var el = $(this);
@@ -68,21 +150,21 @@ function getPanelConsumo(){
 					});
 					
 					var suma = carbohidratos + proteinas + grasas;
-					plt.find("[campo=sumaCalorias]").html(suma.toFixed(2));
-					plt.find("[campo=sumaCarbohidratos]").html(carbohidratos.toFixed(2));
-					plt.find("[campo=sumaProteinas]").html(proteinas.toFixed(2));
-					plt.find("[campo=sumaGrasas]").html(grasas.toFixed(2));
+					//plt.find("[campo=sumaCalorias]").html(suma.toFixed(2));
+					plt.find("[campo=sumaCarbohidratos]").html(c.toFixed(2));
+					plt.find("[campo=sumaProteinas]").html(p.toFixed(2));
+					plt.find("[campo=sumaGrasas]").html(g.toFixed(2));
 					
 					plt.find(".consumo").removeClass("alert-success");
 					plt.find(".consumo").removeClass("alert-danger");
 					plt.find(".consumo").removeClass("alert-warning");
 					plt.find(".btnAlimentos").show();
 					
-					if (suma >= totalCalorias+200){
+					if (carbohidratos+47 < 0 || proteinas+47 < 0 || grasas+106 < 0){
 						plt.find(".consumo").addClass("alert-danger");
 						plt.find(".btnAlimentos").hide();
 					}else{
-						if (suma < totalCalorias-200)
+						if (carbohidratos+47 > 0 || proteinas+47 > 0 || grasas+106 > 0)
 							plt.find(".consumo").addClass("alert-warning");
 						else
 							plt.find(".consumo").addClass("alert-success");
@@ -97,61 +179,6 @@ function getPanelConsumo(){
 				}
 			});
 		}
-		
-		objMenu.getComidas({
-			before: function(){
-				alertify.log("Estamos obteniendo los datos del servidor..."); 
-			},
-			after: function(resp){
-				var primera = false;
-				$.each(resp, function(i, el){
-					var plt = pComida;
-					plt = $(plt);
-					if (!primera){
-						plt.find(".panel-collapse").addClass("in");
-						primera = true;
-					}
-					
-					$.each(el, function(key, value){
-						plt.find("[campo=" + key + "]").html(value);
-					})
-					
-					plt.find(".panel-title").find("a").attr("href", "#comida" + el.idComida);
-					plt.find(".panel-collapse").attr("id", "comida" + el.idComida);
-					plt.find(".btnAlimentos").attr("comida", el.idComida);
-					plt.find(".btnAlimentos").click(function(){
-						$("#winAlimentos").modal();
-						$("#winAlimentos").find("#comida").val(el.idComida);
-					});
-					
-					plt.attr("plantillaComida", el.idComida);
-					
-					plt.find(".btnPlantilla").click(function(){
-						alertify.confirm("<p>¿Está seguro?</p>", function (e) {
-							if (e){
-								objMenu.setAlimentosPlantilla(el.idComida, {
-									before: function(){
-										alertify.log("Se está cargando la lista, espere por favor...");
-										plt.find(".btnPlantilla").prop("disabled", true);
-									}, after: function(resp){
-										plt.find(".btnPlantilla").prop("disabled", false);
-										
-										if (resp.band){
-											getAlimentos(el.idComida);
-											alertify.success("La plantilla fue cargada con éxito");
-										}else
-											alertify.error("No pudo ser cargada la plantilla");
-									}
-								});
-							}
-						}); 
-					});
-					
-					$("#accordion").append(plt);
-					getAlimentos(el.idComida);
-				});
-			}
-		});
 		
 		$("#modulo").find("[campo=caloriasDiarias]").html(objCliente.calorias);
 		

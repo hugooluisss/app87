@@ -116,10 +116,10 @@ $(document).ready(function(){
 		}, function(resp){
 			if (resp.band == "true"){
 				console.log("Suscripcion OK");
-				setTimeout(checkSuscripcion, 360000);
+				//setTimeout(checkSuscripcion, 360000);
 			}else{
-				usuario.logout();
-				navigator.app.loadUrl(server + 'planes', { openExternal:true });
+				alertify.error("<b>Suscripción caducada</b> <br />Hemos detectado que tu suscripción venció, te invitamos a renovarla");
+				getPanelPago();
 			}
 		}, "json");
 	}

@@ -9,7 +9,24 @@
 			<div campo="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
 			<br />
 			<div class="alert alert-success consumo">
-				Tu consumo de calorías debe estar calculado en <b><span campo="totalCalorias"></span></b> calorías, actualmente sumas <b><span campo="sumaCalorias"></span></b> calorías
+				Te sugerimos consumir en las siguientes proporciones
+				
+				<table class="table" id="consumo">
+					<thead>
+						<tr>
+							<th>P</th>
+							<th>C</th>
+							<th>G</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="text-right" campo="proteinas"></td>
+							<td class="text-right" campo="carbohidratos"></td>
+							<td class="text-right" campo="grasas"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="Basic example">
 				<button type="button" class="btn btn-danger btnPlantilla">Generar a partir de plantilla</button>
@@ -17,7 +34,7 @@
 			</div>
 			<br />
 			<br />
-			<table class="table table-sm table-bordered">
+			<table class="table table-sm table-bordered" id="lstAlimentos">
 				<thead>
 					<tr>
 						<th>Alimento</th>

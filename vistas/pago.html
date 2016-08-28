@@ -1,0 +1,97 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.5.0/js/conekta.js"></script>
+
+<div class="container">
+	<div class="text-right">
+		<div class="btn-group">
+			<button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">
+				Otras formas de pago <span class="caret"></span>
+			</button>
+			
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#" id="btnSPEI">SPEI</a></li>
+				<li><a href="#" id="btnOXXO">Tiendas OXXO</a></li>
+			</ul>
+		</div>
+	</div>
+	<br />
+	<form onsubmit="javascript: return false" method="post" id="frmPago" name="frmPago" class="form-horizontal" action="">
+		<div class="form-group">
+			<label class="control-label col-xs-12">Nombre del tarjetahabiente</label>
+			<div class="col-xs-12">
+		    	<input type="text" class="form-control name" data-conekta="card[name]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Número de tarjeta</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control number" data-conekta="card[number]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">CVC</label>
+			<div class="col-xs-5">
+				<input type="text" class="form-control cvc" data-conekta="card[cvc]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Fecha de expiración (MM/AAAA)</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control exp_month" data-conekta="card[exp_month]" maxlength="2" placeholder="MM"/>
+			</div>
+			<div class="col-xs-1">/</div>
+			<div class="col-xs-4">
+				<input type="text" class="form-control exp_year" placeholder="YYYY" maxlength="4" data-conekta="card[exp_year]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Monto</label>
+			<div class="col-xs-4">
+				$ 250.00
+			</div>
+			
+		</div>
+		
+		<!--Dirección -->
+		<div class="form-group">
+			<label class="control-label col-xs-12">Calle</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control calle" data-conekta="card[address][street1]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Colonia</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control colonia" data-conekta="card[address][street2]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Ciudad</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control ciudad" data-conekta="card[address][city]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Estado</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control estado" data-conekta="card[address][state]"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-12">Código Postal</label>
+			<div class="col-xs-12">
+				<input type="text" class="form-control codigoPostal" data-conekta="card[address][zip]"/>
+			</div>
+		</div>
+		
+		<input type="hidden" class="pais" data-conekta="card[address][country]" value="México"/>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 text-center">
+					<button type="submit" class="btn btn-primary btn-block btn-flat">Pagar Ahora</button>
+					<input type='hidden' name='conektaTokenId' id="conektaTokenId">
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
