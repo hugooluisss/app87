@@ -4,11 +4,21 @@ function getPanelMisDatos(){
 		$(".navbar-title").html("Mis datos");
 		$("#winActividad .modal-body").css("max-height", (screen.height - 200) + "px");
 		
-		$("#btnConsumo").hide();
-		
 		$("#modulo").html(resp);
 		var usuario = new TUsuario;
-		var cliente = new TCliente;
+		
+		if (bandNuevo){
+			if (cliente.sexo == 'M')
+				msg = "<b>¿Eres nuevo en el sistema?</b> Inicia con el registro de tus datos principales y posteriormente presiona <b>Calcular y enviar</b>";
+			else
+				msg = "<b>¿Eres nueva en el sistema?</b> Inicia con el registro de tus datos principales y posteriormente presiona <b>Calcular y enviar</b>";
+				
+			$(".alert").html(msg).removeClass("hide");
+			
+			$("#winResultados .alert").html("</b>Muchas gracias por la información... </b> ahora te presentamos los resultados que obtuvimos a partir de tus datos. <b> Proporionanos la actividad que vas a realizar para alcanzar tu objetivo</b>").removeClass("hide");
+			
+			$("#btnConsumo").hide();
+		}
 		
 		$("[campo=sexo]").html(cliente.sexo == 'M'?'<i class="fa fa-male" aria-hidden="true"></i> Masculino':'<i class="fa fa-female" aria-hidden="true"></i> Femenino');
 		
@@ -125,6 +135,8 @@ function getPanelMisDatos(){
 											
 											cliente.idActividad = data.idActividad;
 											cliente.nombreActividad = data.nombre;
+											cliente.calorias = result.calorias;
+											
 											cliente.save();
 											
 											$("#winActividad").modal("hide");
@@ -132,8 +144,19 @@ function getPanelMisDatos(){
 											$("#txtIMC").focus();
 											$("#txtActividad").removeClass("alerta");
 											$("#btnConsumo").show();
+											
+											$(".alert").addClass("hide");
+											
+											if (bandNuevo){
+												bandNuevo = false;
+												
+												$("#winResultados").modal("hide");
+												setTimeout(function(){getPanelConsumo()}, 900);
+												
+												alertify.error("<b>Haz completado la información básica</b>... a continuación te invitaremos a que indiques el menú diario que deseas tener, espera un momento");
+											}
 										}else
-											alertifu.error("Ocurrió un error y no se realizó la actualización");
+											alertify.error("Ocurrió un error y no se realizó la actualización");
 									}
 								});
 							});
@@ -181,7 +204,7 @@ function getPanelMisDatos(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", false);
 						
 						if (resp.band){
-							var cliente = new TCliente;
+							//var cliente = new TCliente;
 							cliente.estatura = $("#txtAltura").val();
 							cliente.peso = $("#txtPeso").val();
 							

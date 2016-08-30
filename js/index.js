@@ -1,8 +1,10 @@
 var usuario = new TUsuario;
+var bandNuevo = false;
+var cliente = new TCliente;
 
 $(document).ready(function(){
 	if (usuario.isSesionIniciada()){
-		var cliente = new TCliente;
+		
 		getPanel();
 		getMenu();
 		
@@ -88,16 +90,16 @@ $(document).ready(function(){
 	function getPanel(){
 		$.get("vistas/panel.html", function(resp){
 			$("#modulo").html(resp);
-			
-			var cliente = new TCliente;
 			$("[campo=bienvenido]").html("Hola " + cliente.nombre);
 			$("[campo=peso]").html(cliente.peso);
 			$("[campo=altura]").html(cliente.estatura);
 			$("[campo=edad]").html(cliente.calcularEdad(false));
 			$("[campo=ultimaActualizacion]").html(cliente.fecha);
-			
-			if (cliente.fecha == '')
+			console.log(cliente.fecha);
+			if (cliente.idActividad == '' || cliente.idActividad == undefined || cliente.idActividad == null){
+				bandNuevo = true;
 				getPanelMisDatos();
+			}
 			
 			$("#btnMisDatos").click(function(){
 				getPanelMisDatos();

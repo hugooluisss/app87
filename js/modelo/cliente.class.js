@@ -2,10 +2,13 @@ TCliente = function(fn){
 	var self = this;
 	self.contFn = 0;
 	//Lo primero que debo de hacer es ver si hay datos, si no los tengo que traer del server
-	this.getDatos = function(){
+	this.getDatos = function(soloServer){
+		if (soloServer == undefined)
+			soloServer = true;
+			
 		var cliente = window.localStorage.getItem("cliente");
 		
-		if (cliente == '' || cliente == undefined){
+		if (cliente == '' || cliente == undefined || !soloServer){
 			usuario = new TUsuario;
 			$.post(server + 'cclientes', {
 				"id": usuario.getId(),

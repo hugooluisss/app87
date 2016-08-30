@@ -29,7 +29,6 @@ function getPanelPago(){
 				
 				/* and submit */
 				//$form.get(0).submit();
-				
 				$.post(server + '?mod=cpagos&action=cobroTarjeta', {
 					"token": token.id,
 					"cliente": usuario.getId(),
@@ -41,7 +40,7 @@ function getPanelPago(){
 					"pais": $(".pais").val()
 				}, function(resp) {
 					console.log(resp);
-					
+					$form.find("button").prop("disabled", false);
 					if (resp.band == true){
 						alertify.success("<b>Muchas gracias por su pago</b> <br />Es necesario iniciar sesión");
 						var objUsuario = new TUsuario;
@@ -53,7 +52,8 @@ function getPanelPago(){
 								}
 							});
 						}, 3000);
-					}
+					}else
+						alertify.error(resp.mensaje);
 				}, "json");
 			
 			
