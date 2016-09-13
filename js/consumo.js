@@ -110,21 +110,21 @@ function getPanelConsumo(){
 					
 					plt.find("#lstAlimentos").find("tbody").find("tr").remove();
 					$.each(resp, function(key, tr){
-						comidaProteinas = parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2);
-						comidaCarbohidratos = parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2);
-						comidaGrasas = parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2);
+						comidaProteinas = parseFloat(tr.proteinas * tr.cantidad).toFixed(2);
+						comidaCarbohidratos = parseFloat(tr.carbohidratos * tr.cantidad).toFixed(2);
+						comidaGrasas = parseFloat(tr.grasas * tr.cantidad).toFixed(2);
 						
-						elemento = $('<tr><td>' + tr.nombre + '</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
+						elemento = $('<tr><td>' + tr.nombre + ' (' + tr.cantidad + 'g)</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
 						plt.find("#lstAlimentos").find("tbody").append(elemento);
 						
 						cantidad += parseFloat(tr.cantidad);
-						carbohidratos -= parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2);
-						proteinas -= parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2);
-						grasas -= parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2);
+						carbohidratos -= parseFloat(tr.carbohidratos * tr.cantidad).toFixed(2);
+						proteinas -= parseFloat(tr.proteinas * tr.cantidad).toFixed(2);
+						grasas -= parseFloat(tr.grasas * tr.cantidad).toFixed(2);
 						
-						c += parseFloat(parseFloat(tr.carbohidratos * tr.cantidad * 4).toFixed(2));
-						p += parseFloat(parseFloat(tr.proteinas * tr.cantidad * 4).toFixed(2));
-						g += parseFloat(parseFloat(tr.grasas * tr.cantidad * 9).toFixed(2));
+						c += parseFloat(parseFloat(tr.carbohidratos * tr.cantidad).toFixed(2));
+						p += parseFloat(parseFloat(tr.proteinas * tr.cantidad).toFixed(2));
+						g += parseFloat(parseFloat(tr.grasas * tr.cantidad).toFixed(2));
 						
 						elemento.click(function(){
 							var el = $(this);
