@@ -36,8 +36,7 @@ function getPanelPago(){
 					"colonia": $(".colonia").val(),
 					"ciudad": $(".ciudad").val(),
 					"estado": $(".estado").val(),
-					"codigoPostal": $(".codigoPostal").val(),
-					"pais": $(".pais").val()
+					"codigoPostal": $(".codigoPostal").val()
 				}, function(resp) {
 					console.log(resp);
 					$form.find("button").prop("disabled", false);

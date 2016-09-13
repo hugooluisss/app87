@@ -31,8 +31,6 @@ function getPanelConsumo(){
 				tabla.find("[campo=proteinas]").text(totalProteinas);
 				tabla.find("[campo=grasas]").text(totalGrasas);
 				
-				
-				
 				objMenu.getComidas({
 					before: function(){
 						alertify.log("Estamos obteniendo los datos del servidor..."); 

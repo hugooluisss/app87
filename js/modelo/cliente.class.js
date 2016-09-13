@@ -1,72 +1,97 @@
 TCliente = function(fn){
 	var self = this;
 	self.contFn = 0;
-	//Lo primero que debo de hacer es ver si hay datos, si no los tengo que traer del server
+	//Lo primero que debo de hacer es ver si hay datos, si no los tengo hay que traer del server
 	this.getDatos = function(soloServer){
 		if (soloServer == undefined)
 			soloServer = true;
 			
 		var cliente = window.localStorage.getItem("cliente");
 		
-		if (cliente == '' || cliente == undefined || !soloServer){
-			usuario = new TUsuario;
+		try{
+			if (!soloServer)
+				self.getDataServer();
+			else{
+				if (cliente == '' || cliente == undefined){
+					var data = JSON.parse(cliente);
+					
+					if (data.idCliente == '' || data.idCliente == null || data.idCliente == undefined)
+						self.getDataServer();
+					else
+						self.getDataApp();
+				}else
+					self.getDataApp();
+			}
+		}catch(err){
+			self.getDataServer();
+		}
+	}
+	
+	this.getDataServer = function(){
+		usuario = new TUsuario;
+		if (usuario.getId() != ''){
 			$.post(server + 'cclientes', {
 				"id": usuario.getId(),
 				"action": 'getData',
 				"movil": '1'
 			}, function(data){
-					self.idCliente = data.idCliente;
-					self.nombre = data.nombre;
-					self.sexo = data.sexo;
-					self.email = data.email;
-					self.nacimiento = data.nacimiento;
-					self.peso = data.peso;
-					self.estatura = data.estatura;
-					self.idFrecuencia = data.idFrecuencia;
-					self.nombreFrecuencia = data.nombreFrecuencia;
-					self.objetivo = data.objetivo;
-					self.fecha = data.fecha;
-					self.calorias = data.calorias;
-					self.idActividad = data.idActividad;
-					self.nombreActividad = data.nombreActividad;
-					
-					window.localStorage.removeItem("cliente");
-					window.localStorage.setItem("cliente", JSON.stringify(data));
-					console.log("SERVER ", data);
-					
-					if (fn !== undefined){
-						if (fn.after !== undefined && self.contFn == 0){
-							self.contFn++;
-							fn.after();
-						}
+				self.idCliente = data.idCliente;
+				self.nombre = data.nombre;
+				self.sexo = data.sexo;
+				self.email = data.email;
+				self.nacimiento = data.nacimiento;
+				self.peso = data.peso;
+				self.estatura = data.estatura;
+				self.idFrecuencia = data.idFrecuencia;
+				self.nombreFrecuencia = data.nombreFrecuencia;
+				self.objetivo = data.objetivo;
+				self.fecha = data.fecha;
+				self.calorias = data.calorias;
+				self.idActividad = data.idActividad;
+				self.nombreActividad = data.nombreActividad;
+				
+				self.save();
+				//window.localStorage.removeItem("cliente");
+				//window.localStorage.setItem("cliente", JSON.stringify(data));
+				console.log("SERVER ", data);
+				
+				if (fn !== undefined){
+					if (fn.after !== undefined && self.contFn == 0){
+						self.contFn++;
+						fn.after();
 					}
-			}, "json");
-		}else{
-			var data = JSON.parse(cliente);
-			console.log("SISTEMA ", data);
-			
-			self.idCliente = data.idCliente;
-			self.nombre = data.nombre;
-			self.sexo = data.sexo;
-			self.email = data.email;
-			self.nacimiento = data.nacimiento;
-			self.peso = data.peso;
-			self.estatura = data.estatura;
-			self.idFrecuencia = data.idFrecuencia;
-			self.nombreFrecuencia = data.nombreFrecuencia;
-			self.objetivo = data.objetivo;
-			self.fecha = data.fecha;
-			self.calorias = data.calorias;
-			self.idActividad = data.idActividad;
-			self.nombreActividad = data.nombreActividad;
-			
-			//window.localStorage.removeItem("cliente");
-			
-			if (fn !== undefined){
-				if (fn.after !== undefined && self.contFn == 0){
-					self.contFn++;
-					fn.after();
 				}
+			}, "json");
+		}
+	}
+	
+	this.getDataApp = function(){
+		var cliente = window.localStorage.getItem("cliente");
+		
+		var data = JSON.parse(cliente);
+		console.log("SISTEMA ", data);
+		
+		self.idCliente = data.idCliente;
+		self.nombre = data.nombre;
+		self.sexo = data.sexo;
+		self.email = data.email;
+		self.nacimiento = data.nacimiento;
+		self.peso = data.peso;
+		self.estatura = data.estatura;
+		self.idFrecuencia = data.idFrecuencia;
+		self.nombreFrecuencia = data.nombreFrecuencia;
+		self.objetivo = data.objetivo;
+		self.fecha = data.fecha;
+		self.calorias = data.calorias;
+		self.idActividad = data.idActividad;
+		self.nombreActividad = data.nombreActividad;
+		
+		//window.localStorage.removeItem("cliente");
+		
+		if (fn !== undefined){
+			if (fn.after !== undefined && self.contFn == 0){
+				self.contFn++;
+				fn.after();
 			}
 		}
 	}
@@ -94,7 +119,7 @@ TCliente = function(fn){
 		window.localStorage.setItem("cliente", JSON.stringify(obj));
 	}
 	
-	this.calcularEdad = function(server){
+	this.calcularEdad = function(server2){
 		if (self.nacimiento == '' || self.nacimiento == undefined) return 0;
 		else{
 			var fecha = self.nacimiento;
@@ -117,7 +142,7 @@ TCliente = function(fn){
 			if (edad > 1900)
 				edad -= 1900;
 			
-			if (server === true){
+			if (server2 === true){
 				$.post(server + 'cclientes', {
 					"nacimiento": self.nacimiento,
 					"cliente": self.idCliente,
@@ -138,7 +163,7 @@ TCliente = function(fn){
 	this.calcularIMC = function(){
 		var peso = this.peso;
 		var altura = this.estatura / 100;
-		console.log(peso + " " + altura + " " + this.estatura);
+
 		if (peso == '' || altura == '')
 			return 0;
 		else{
@@ -151,7 +176,7 @@ TCliente = function(fn){
 		var imc = this.calcularIMC();
 		var edad = this.calcularEdad(self.nacimiento); //D7
 		var iSexo = self.sexo == 'M'?0:1; //D8
-		console.log(iSexo + ' ' + edad);
+		
 		var PGCE = -44.988 + 0.503 * edad + 10.689 * iSexo + 3.172 * imc - 0.026 * imc * imc + 0.181 * imc * iSexo - 0.02 * imc * edad - 0.005 * imc * imc * iSexo + 0.00021 * imc * imc * edad;
 		
 		return Number(Math.round(PGCE + 'e1') + 'e-1');

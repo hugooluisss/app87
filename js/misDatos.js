@@ -125,7 +125,8 @@ function getPanelMisDatos(){
 								var momento = new TMomento();
 								momento.setActividad(usuario.getId(), data.idActividad, {
 									before: function(){
-										alertify.log("Estamos actualizando la actividad que realizarás... espera un momento"); 
+										if (!bandNuevo)
+											alertify.log("Estamos actualizando la actividad que realizarás... espera un momento"); 
 									}, after: function(result){
 										if (result.band){
 											alertify.success("Datos actualizados");
@@ -149,9 +150,20 @@ function getPanelMisDatos(){
 											
 											if (bandNuevo){
 												bandNuevo = false;
+												objMenu = new TMenu;
+												objMenu.setAlimentosPlantilla(null, {
+													before: function(){
+														alertify.log("Estamos construyendo su menú, por favor espere...");
+													}, after: function(resp){
+														if (resp.band){
+															$("#winResultados").modal("hide");
+															setTimeout(function(){getPanelConsumo()}, 900);
 												
-												$("#winResultados").modal("hide");
-												setTimeout(function(){getPanelConsumo()}, 900);
+															alertify.success("La plantilla fue cargada con éxito");
+														}else
+															alertify.error("No pudo ser cargada la plantilla");
+													}
+												});
 												
 												alertify.error("<b>Haz completado la información básica</b>... a continuación te invitaremos a que indiques el menú diario que deseas tener, espera un momento");
 											}
@@ -194,7 +206,7 @@ function getPanelMisDatos(){
 			},
 			submitHandler: function(form){
 				var momento = new TMomento;
-				console.log($("#selObjetivo").val());
+				
 				momento.add(cliente.idCliente, $("#txtAltura").val(), $("#txtPeso").val(), $("#txtFrecuencia").attr("identificador"), $("#selObjetivo").val(), {
 					before: function(){
 						$("#frmDatos").find("[type=submit]").prop("disabled", true);

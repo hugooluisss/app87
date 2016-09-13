@@ -95,7 +95,7 @@ $(document).ready(function(){
 			$("[campo=altura]").html(cliente.estatura);
 			$("[campo=edad]").html(cliente.calcularEdad(false));
 			$("[campo=ultimaActualizacion]").html(cliente.fecha);
-			console.log(cliente.fecha);
+			
 			if (cliente.idActividad == '' || cliente.idActividad == undefined || cliente.idActividad == null){
 				bandNuevo = true;
 				getPanelMisDatos();
@@ -116,13 +116,25 @@ $(document).ready(function(){
 			"action": "getSuscripcion",
 			"id": usuario.getId()
 		}, function(resp){
-			if (resp.band == "true"){
-				console.log("Suscripcion OK");
-				//setTimeout(checkSuscripcion, 360000);
-			}else{
-				alertify.error("<b>Suscripción caducada</b> <br />Hemos detectado que tu suscripción venció, te invitamos a renovarla");
-				getPanelPago();
+			switch(resp.band){
+				case 1:
+					console.log("Suscripcion OK");
+					//setTimeout(checkSuscripcion, 360000);
+				break;
+				case 0:
+					alertify.error("<b>Suscripción caducada</b> <br />Hemos detectado que tu suscripción venció, te invitamos a renovarla");
+					getPanelPago();
+				break;
+				case -1:
+					usuario.logout({
+						after: function(){
+							alert("El usuario no existe");
+							//location.reload(true);
+						}
+					});
+				break;
 			}
+			
 		}, "json");
 	}
 });
