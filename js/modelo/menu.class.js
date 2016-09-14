@@ -71,6 +71,26 @@ TMenu = function(){
 			}, "json");
 	}
 	
+	this.cambiarAlimento = function(comida, alimento, cambio, cantidad, fn){
+		if (fn.before !== undefined) fn.before();
+		
+		$.post(server + 'cmenus', {
+				"movil": '1',
+				"comida": comida,
+				"alimento": alimento,
+				"cambio": cambio,
+				"cantidad": cantidad,
+				"action": "cambiarAlimento",
+				"cliente": self.cliente.idCliente
+			}, function(data){
+				if (data.band == 'false')
+					console.log(data.mensaje);
+					
+				if (fn.after !== undefined)
+					fn.after(data);
+			}, "json");
+	}
+	
 	this.delAlimento = function(comida, alimento, fn){
 		if (fn.before !== undefined) fn.before();
 		

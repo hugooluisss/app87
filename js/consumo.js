@@ -114,7 +114,7 @@ function getPanelConsumo(){
 						comidaCarbohidratos = parseFloat(tr.carbohidratos * tr.cantidad).toFixed(2);
 						comidaGrasas = parseFloat(tr.grasas * tr.cantidad).toFixed(2);
 						
-						elemento = $('<tr><td>' + tr.nombre + ' (' + tr.cantidad + 'g)</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
+						elemento = $('<tr proteinas="' + comidaProteinas + '" carbohidratos="' + comidaCarbohidratos + '" grasas="' + comidaGrasas + '"><td>' + tr.nombre + ' (' + (Math.round(tr.cantidad*100)) + 'g)</td><td class="text-right">' + (comidaProteinas) + '</td><td class="text-right">' + (comidaCarbohidratos) + '</td><td class="text-right">' + (comidaGrasas) + '</td></tr>');
 						plt.find("#lstAlimentos").find("tbody").append(elemento);
 						
 						cantidad += parseFloat(tr.cantidad);
@@ -126,24 +126,52 @@ function getPanelConsumo(){
 						p += parseFloat(parseFloat(tr.proteinas * tr.cantidad).toFixed(2));
 						g += parseFloat(parseFloat(tr.grasas * tr.cantidad).toFixed(2));
 						
+						if (comidaProteinas >= comidaCarbohidratos && comidaProteinas >= comidaGrasas)
+							elemento.attr("rico", 1);
+							
+						if (comidaCarbohidratos >= comidaProteinas && comidaCarbohidratos >= comidaGrasas)
+							elemento.attr("rico", 2);
+							
+						if (comidaGrasas >= comidaCarbohidratos && comidaGrasas >= comidaProteinas)
+							elemento.attr("rico", 3);
+						
 						elemento.click(function(){
-							var el = $(this);
-							alertify.confirm("<p>¿Está seguro de querer eliminar el alimento de la lista?</p>", function (e) {
-								if (e){
-									objMenu.delAlimento(idComida, tr.idAlimento, {
-										before: function(){
-											alertify.log("Se está quitando el alimento de la lista");
-										}, after: function(resp){
-											if (resp.band){
-												//el.remove();
-												getAlimentos(idComida);
-												alertify.success("Se quitó el alimento de la lista");
-											}else
-												alertify.error("No se pudo quitar el alimento de la lista");
-										}
-									});
+							var elemento = $(this);
+							console.log("Rico en " + elemento.attr("rico"));
+							
+							$("#winAlimentos").find(".list-group-item").each(function(){
+								var alimento = $(this);
+								
+								if (alimento.attr("rico") != elemento.attr("rico") || tr.idAlimento == alimento.find("#txtCantidad").attr('alimento'))
+									alimento.hide();
+								else
+									alimento.show();
+								
+								switch(alimento.attr("rico")){
+									case '1':
+										comparador = alimento.find("[campo=proteinas]").html();
+										comparador2 = elemento.attr("proteinas");
+									break;
+									case '2':
+										comparador = alimento.find("[campo=carbohidratos]").html();
+										comparador2 = elemento.attr("carbohidratos");
+										console.log(comparador + " " + comparador2);
+									break;
+									case '3':
+										comparador = alimento.find("[campo=grasas]").html();
+										comparador2 = elemento.attr("grasas");
+									break;
 								}
+								
+								alimento.find("#txtCantidad").val(Math.round(comparador2 * 100 / comparador));
+								alimento.find("#btnAgregar").attr("alimento", tr.idAlimento);
 							});
+							
+							$("#winAlimentos").modal();
+							$("#winAlimentos").find("#comida").val(idComida);
+								
+							//En este punto ya sabemos rico en que es, entonces se hace el cambio por el similar
+							
 						});
 					});
 					
@@ -193,12 +221,20 @@ function getPanelConsumo(){
 						plt.find("[campo=" + key + "]").html(value);
 					});
 					
-					plt.find("#selCantidad").attr("alimento", el.idAlimento);
+					if (el.proteinas >= el.carbohidratos && el.proteinas >= el.grasas)
+						plt.attr("rico", 1);
+						
+					if (el.carbohidratos >= el.proteinas && el.carbohidratos >= el.grasas)
+						plt.attr("rico", 2);
+						
+					if (el.grasas >= el.carbohidratos && el.grasas >= el.proteinas)
+						plt.attr("rico", 3);
+					
+					
+					plt.find("#txtCantidad").attr("alimento", el.idAlimento);
 					
 					plt.find("#btnAgregar").click(function(){
-						valor = plt.find("#selCantidad").val();
-						
-						objMenu.addAlimento($("#winAlimentos").find("#comida").val(), plt.find("#selCantidad").attr("alimento"), plt.find("#selCantidad").val(), {
+						objMenu.cambiarAlimento($("#winAlimentos").find("#comida").val(), plt.find("#btnAgregar").attr("alimento"), plt.find("#txtCantidad").attr("alimento"), plt.find("#txtCantidad").val() / 100, {
 							before: function(){
 								plt.find("#btnAgregar").prop("disabled", true);
 							},
@@ -207,10 +243,11 @@ function getPanelConsumo(){
 								
 								if(resp.band){
 									getAlimentos($("#winAlimentos").find("#comida").val());
-									alertify.success("Se agregó el alimento a la lista");
+									alertify.success("Se realizó el cambio");
+									$("#winAlimentos").modal("hide");
 								}else{
 									if (resp.mensaje == '' || resp.mensaje == undefined)
-										alertify.error("Al parecer este alimento ya está en la lista");
+										alertify.error("Al parecer este alimento ya está en la lista, intenta hacer el intercambio por otro de la lista");
 									else
 										alertify.error(resp.mensaje);
 								}
